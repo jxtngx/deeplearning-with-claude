@@ -1,32 +1,29 @@
 """
-Training and evaluation pipeline orchestration for machine learning experiments.
+Main entrypoint script for ML pipeline execution.
 
-This module coordinates the complete ML workflow, managing training runs,
-evaluation processes, and experiment tracking. It serves as the main entry
-point for executing experiments with various configurations.
+This module serves as the command-line interface for running machine
+learning experiments. It parses arguments, loads configurations, and
+delegates to appropriate modules for actual implementation.
 
 Key responsibilities:
-- Orchestrate end-to-end training and evaluation pipelines
-- Manage experiment configurations and hyperparameter sweeps
-- Coordinate model checkpointing and restoration
-- Track and compare experiment metrics across runs
-- Handle distributed training coordination
-- Generate comprehensive experiment reports
-- Ensure reproducibility through configuration management
+- Parse command-line arguments and configuration files
+- Initialize the appropriate pipeline (train, evaluate, serve)
+- Set up logging and experiment tracking
+- Handle high-level error catching and reporting
+- Provide a unified CLI interface for all ML operations
+
+Usage:
+    python src/runner.py train --config configs/experiment.yaml
+    python src/runner.py evaluate --checkpoint path/to/model.pt
+    python src/runner.py serve --model model.pt --port 8080
 
 Integration points:
-- Uses trainer.py for training loop execution
-- Leverages data.py for dataset and dataloader creation
-- Interfaces with network.py for model instantiation
-- Coordinates with compute.py for resource allocation
-- Integrates with metrics evaluation systems
+- Calls trainer.py for training execution
+- Calls data.py for data pipeline setup
+- Calls network.py for model creation
+- Calls server.py for model serving
+- Calls compute.py for resource management
 
-Typical workflow:
-1. Load experiment configuration
-2. Initialize data pipelines
-3. Create model architecture
-4. Execute training with monitoring
-5. Perform evaluation on test sets
-6. Save checkpoints and artifacts
-7. Generate experiment reports
+Agent ownership:
+- RunnerOrchestrator: CLI orchestration and pipeline coordination
 """
