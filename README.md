@@ -1,4 +1,6 @@
-# PyTorch & Hugging Face ML Template
+# Claude Code PyTorch
+
+A modular, multi-agent based system for PyTorch, Hugging Face, and AWS.
 
 ## Philosophy
 
