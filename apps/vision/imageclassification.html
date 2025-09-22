@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Classification Web App</title>
+    <link rel="stylesheet" href="../global.css">
+    <style>
+        body {
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-2xl);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--gradient-primary);
+            color: var(--foreground);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: var(--text-4xl);
+            font-weight: var(--font-bold);
+            margin-bottom: var(--space-3);
+        }
+
+        .header p {
+            font-size: var(--text-lg);
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: var(--space-10);
+        }
+
+        .upload-section {
+            margin-bottom: var(--space-8);
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-10);
+            text-align: center;
+            background: var(--muted);
+            cursor: pointer;
+            transition: all var(--transition-base) var(--ease-in-out);
+            position: relative;
+        }
+
+        .upload-area:hover {
+            border-color: var(--ring);
+            background: var(--neutral-800);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--ring);
+            background: var(--neutral-700);
+            border-style: solid;
+        }
+
+        .upload-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            opacity: 0.6;
+        }
+
+        .upload-text {
+            font-size: var(--text-lg);
+            color: var(--muted-foreground);
+            margin-bottom: var(--space-3);
+        }
+
+        .upload-subtext {
+            font-size: var(--text-sm);
+            color: var(--muted-foreground);
+            opacity: 0.7;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .preview-section {
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .preview-container {
+            position: relative;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+
+        .remove-image {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--error);
+            color: var(--error-foreground);
+            border: none;
+            border-radius: var(--radius-full);
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity var(--transition-base) var(--ease-in-out);
+        }
+
+        .remove-image:hover {
+            opacity: 0.9;
+        }
+
+        .classify-button {
+            background: var(--gradient-success);
+            color: var(--foreground);
+            border: none;
+            padding: var(--space-4) var(--space-10);
+            font-size: var(--text-lg);
+            font-weight: var(--font-semibold);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all var(--transition-base) var(--ease-in-out);
+            width: 100%;
+            margin-bottom: var(--space-8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .classify-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+            opacity: 0.95;
+        }
+
+        .classify-button:disabled {
+            background: var(--muted);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.5;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid var(--foreground);
+            border-radius: var(--radius-full);
+            animation: spin 1s linear infinite;
+            margin-right: var(--space-3);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .results-header {
+            font-size: var(--text-2xl);
+            font-weight: var(--font-semibold);
+            margin-bottom: var(--space-5);
+            color: var(--foreground);
+        }
+
+        .prediction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-4);
+            margin-bottom: var(--space-3);
+            background: var(--muted);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--accent);
+        }
+
+        .prediction-label {
+            font-weight: var(--font-semibold);
+            color: var(--foreground);
+        }
+
+        .prediction-confidence {
+            font-weight: var(--font-medium);
+            color: var(--muted-foreground);
+        }
+
+        .confidence-bar {
+            width: 100px;
+            height: 6px;
+            background: var(--neutral-800);
+            border-radius: var(--radius-sm);
+            margin-left: var(--space-4);
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: var(--gradient-success);
+            border-radius: var(--radius-sm);
+            transition: width var(--transition-slow) var(--ease-in-out);
+        }
+
+        .error-message {
+            display: none;
+            background: var(--error-muted);
+            border: 1px solid var(--error);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            color: var(--error);
+            margin-bottom: var(--space-5);
+        }
+
+        .success-message {
+            display: none;
+            background: var(--success-muted);
+            border: 1px solid var(--success);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            color: var(--success);
+            margin-bottom: var(--space-5);
+        }
+
+        .model-info {
+            background: var(--muted);
+            border-radius: var(--radius-lg);
+            padding: var(--space-5);
+            margin-top: var(--space-8);
+            border-left: 4px solid var(--accent);
+        }
+
+        .model-info h3 {
+            color: var(--foreground);
+            margin-bottom: var(--space-3);
+        }
+
+        .model-info p {
+            color: var(--muted-foreground);
+            font-size: var(--text-sm);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: var(--space-3);
+                border-radius: var(--radius-lg);
+            }
+
+            .header {
+                padding: var(--space-5);
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .main-content {
+                padding: var(--space-5);
+            }
+
+            .upload-area {
+                padding: var(--space-5);
+            }
+
+            .prediction-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .confidence-bar {
+                width: 100%;
+                margin-left: 0;
+            }
+        }
+
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Image Classification</h1>
+            <p>Upload an image to classify it using our trained deep learning model</p>
+        </header>
+
+        <main class="main-content">
+            <div class="error-message" id="errorMessage" role="alert"></div>
+            <div class="success-message" id="successMessage" role="alert"></div>
+
+            <section class="upload-section">
+                <div class="upload-area" id="uploadArea" tabindex="0" role="button" aria-label="Upload image file">
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7,10 12,15 17,10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <div class="upload-text">Drop your image here or click to browse</div>
+                    <div class="upload-subtext">Supports JPEG, PNG, WebP (max 10MB)</div>
+                </div>
+                <input type="file" id="fileInput" class="file-input" accept="image/jpeg,image/jpg,image/png,image/webp" aria-label="Select image file">
+            </section>
+
+            <section class="preview-section" id="previewSection">
+                <div class="preview-container">
+                    <img id="previewImage" class="preview-image" alt="Preview of uploaded image">
+                    <button class="remove-image" id="removeImage" aria-label="Remove image">×</button>
+                </div>
+            </section>
+
+            <button class="classify-button" id="classifyButton" disabled>
+                <div class="loading-spinner" id="loadingSpinner"></div>
+                <span id="buttonText">Select an image to classify</span>
+            </button>
+
+            <section class="results-section" id="resultsSection">
+                <h2 class="results-header">Classification Results</h2>
+                <div id="predictionsList"></div>
+            </section>
+
+            <div class="model-info">
+                <h3>About this Model</h3>
+                <p>This image classification system uses a deep learning model trained on various image categories. The model analyzes your uploaded image and provides predictions with confidence scores for the most likely categories.</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        class ImageClassifier {
+            constructor() {
+                this.apiEndpoint = '/predict';
+                this.maxFileSize = 10 * 1024 * 1024; // 10MB
+                this.allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+
+                this.initializeElements();
+                this.bindEvents();
+            }
+
+            initializeElements() {
+                this.uploadArea = document.getElementById('uploadArea');
+                this.fileInput = document.getElementById('fileInput');
+                this.previewSection = document.getElementById('previewSection');
+                this.previewImage = document.getElementById('previewImage');
+                this.removeImageBtn = document.getElementById('removeImage');
+                this.classifyButton = document.getElementById('classifyButton');
+                this.buttonText = document.getElementById('buttonText');
+                this.loadingSpinner = document.getElementById('loadingSpinner');
+                this.resultsSection = document.getElementById('resultsSection');
+                this.predictionsList = document.getElementById('predictionsList');
+                this.errorMessage = document.getElementById('errorMessage');
+                this.successMessage = document.getElementById('successMessage');
+            }
+
+            bindEvents() {
+                // File input events
+                this.fileInput.addEventListener('change', (e) => this.handleFileSelect(e));
+
+                // Upload area events
+                this.uploadArea.addEventListener('click', () => this.fileInput.click());
+                this.uploadArea.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.fileInput.click();
+                    }
+                });
+
+                // Drag and drop events
+                this.uploadArea.addEventListener('dragover', (e) => this.handleDragOver(e));
+                this.uploadArea.addEventListener('dragleave', (e) => this.handleDragLeave(e));
+                this.uploadArea.addEventListener('drop', (e) => this.handleDrop(e));
+
+                // Remove image event
+                this.removeImageBtn.addEventListener('click', () => this.removeImage());
+
+                // Classify button event
+                this.classifyButton.addEventListener('click', () => this.classifyImage());
+            }
+
+            handleDragOver(e) {
+                e.preventDefault();
+                this.uploadArea.classList.add('dragover');
+            }
+
+            handleDragLeave(e) {
+                e.preventDefault();
+                this.uploadArea.classList.remove('dragover');
+            }
+
+            handleDrop(e) {
+                e.preventDefault();
+                this.uploadArea.classList.remove('dragover');
+
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    this.processFile(files[0]);
+                }
+            }
+
+            handleFileSelect(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    this.processFile(file);
+                }
+            }
+
+            processFile(file) {
+                this.hideMessages();
+
+                // Validate file
+                if (!this.validateFile(file)) {
+                    return;
+                }
+
+                this.currentFile = file;
+                this.displayPreview(file);
+                this.updateClassifyButton(true);
+                this.hideResults();
+            }
+
+            validateFile(file) {
+                // Check file type
+                if (!this.allowedTypes.includes(file.type)) {
+                    this.showError('Please select a valid image file (JPEG, PNG, or WebP).');
+                    return false;
+                }
+
+                // Check file size
+                if (file.size > this.maxFileSize) {
+                    this.showError('File size must be less than 10MB.');
+                    return false;
+                }
+
+                return true;
+            }
+
+            displayPreview(file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.previewImage.src = e.target.result;
+                    this.previewSection.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+
+            removeImage() {
+                this.currentFile = null;
+                this.previewSection.style.display = 'none';
+                this.fileInput.value = '';
+                this.updateClassifyButton(false);
+                this.hideResults();
+                this.hideMessages();
+            }
+
+            updateClassifyButton(hasFile) {
+                if (hasFile) {
+                    this.classifyButton.disabled = false;
+                    this.buttonText.textContent = 'Classify Image';
+                } else {
+                    this.classifyButton.disabled = true;
+                    this.buttonText.textContent = 'Select an image to classify';
+                }
+            }
+
+            async classifyImage() {
+                if (!this.currentFile) return;
+
+                this.setLoading(true);
+                this.hideMessages();
+                this.hideResults();
+
+                try {
+                    const formData = new FormData();
+                    formData.append('image', this.currentFile);
+
+                    const response = await fetch(this.apiEndpoint, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Classification failed: ${response.status} ${response.statusText}`);
+                    }
+
+                    const result = await response.json();
+                    this.displayResults(result);
+                    this.showSuccess('Image classified successfully!');
+
+                } catch (error) {
+                    console.error('Classification error:', error);
+                    this.showError(`Classification failed: ${error.message}`);
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            displayResults(result) {
+                this.predictionsList.innerHTML = '';
+
+                // Handle different possible response formats
+                let predictions = [];
+                if (result.predictions) {
+                    predictions = result.predictions;
+                } else if (result.results) {
+                    predictions = result.results;
+                } else if (Array.isArray(result)) {
+                    predictions = result;
+                } else if (result.class && result.confidence !== undefined) {
+                    predictions = [{ label: result.class, confidence: result.confidence }];
+                }
+
+                if (predictions.length === 0) {
+                    this.predictionsList.innerHTML = '<p>No predictions available.</p>';
+                    this.resultsSection.style.display = 'block';
+                    return;
+                }
+
+                predictions.forEach((prediction, index) => {
+                    const item = this.createPredictionItem(prediction, index);
+                    this.predictionsList.appendChild(item);
+                });
+
+                this.resultsSection.style.display = 'block';
+                this.resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            createPredictionItem(prediction, index) {
+                const item = document.createElement('div');
+                item.className = 'prediction-item';
+
+                const label = prediction.label || prediction.class || prediction.category || `Class ${index + 1}`;
+                const confidence = prediction.confidence || prediction.score || prediction.probability || 0;
+                const confidencePercent = Math.round(confidence * 100);
+
+                item.innerHTML = `
+                    <div class="prediction-label">${this.escapeHtml(label)}</div>
+                    <div style="display: flex; align-items: center;">
+                        <div class="prediction-confidence">${confidencePercent}%</div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: ${confidencePercent}%"></div>
+                        </div>
+                    </div>
+                `;
+
+                return item;
+            }
+
+            setLoading(isLoading) {
+                if (isLoading) {
+                    this.classifyButton.disabled = true;
+                    this.loadingSpinner.style.display = 'inline-block';
+                    this.buttonText.textContent = 'Classifying...';
+                } else {
+                    this.classifyButton.disabled = false;
+                    this.loadingSpinner.style.display = 'none';
+                    this.buttonText.textContent = 'Classify Image';
+                }
+            }
+
+            showError(message) {
+                this.errorMessage.textContent = message;
+                this.errorMessage.style.display = 'block';
+                this.errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            showSuccess(message) {
+                this.successMessage.textContent = message;
+                this.successMessage.style.display = 'block';
+            }
+
+            hideMessages() {
+                this.errorMessage.style.display = 'none';
+                this.successMessage.style.display = 'none';
+            }
+
+            hideResults() {
+                this.resultsSection.style.display = 'none';
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        }
+
+        // Initialize the application when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new ImageClassifier();
+        });
+
+        // Global error handler for unhandled promise rejections
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('Unhandled promise rejection:', event.reason);
+            const errorMessage = document.getElementById('errorMessage');
+            if (errorMessage) {
+                errorMessage.textContent = 'An unexpected error occurred. Please try again.';
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

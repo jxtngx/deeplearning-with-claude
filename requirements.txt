@@ -1,0 +1,45 @@
+# Core ML dependencies
+torch
+torchvision
+torchaudio
+
+# HuggingFace ecosystem
+transformers
+datasets
+accelerate
+tokenizers
+safetensors
+
+# Data processing
+numpy
+pandas
+pillow
+opencv-python
+
+# Utilities
+tqdm
+pyyaml
+python-dotenv
+requests
+rich
+
+# AWS integration
+boto3
+sagemaker
+
+# Experiment tracking
+mlflow
+optuna
+
+# Serving
+fastapi
+uvicorn
+pydantic
+
+# Development
+ruff
+black
+mypy
+pre-commit
+pytest
+pytest-cov

@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vision-Language Understanding</title>
+    <link rel="stylesheet" href="../global.css">
+    <style>
+        body {
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--card);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-2xl);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--gradient-primary);
+            color: var(--foreground);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: var(--text-4xl);
+            font-weight: var(--font-bold);
+            margin-bottom: var(--space-3);
+        }
+
+        .header p {
+            font-size: var(--text-lg);
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: var(--space-10);
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: var(--space-3);
+            margin-bottom: var(--space-8);
+            flex-wrap: wrap;
+        }
+
+        .mode-button {
+            flex: 1;
+            min-width: 200px;
+            padding: var(--space-3) var(--space-5);
+            border: 2px solid var(--border);
+            background: var(--muted);
+            color: var(--muted-foreground);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all var(--transition-base) var(--ease-in-out);
+            font-weight: var(--font-semibold);
+            text-align: center;
+        }
+
+        .mode-button.active {
+            background: var(--gradient-primary);
+            color: var(--foreground);
+            border-color: var(--accent);
+        }
+
+        .input-section {
+            margin-bottom: var(--space-8);
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-8);
+            margin-bottom: var(--space-5);
+        }
+
+        .input-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-label {
+            font-weight: var(--font-semibold);
+            color: var(--foreground);
+            margin-bottom: var(--space-3);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-8);
+            text-align: center;
+            background: var(--muted);
+            cursor: pointer;
+            transition: all var(--transition-base) var(--ease-in-out);
+            position: relative;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .upload-area:hover {
+            border-color: var(--ring);
+            background: var(--neutral-800);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--ring);
+            background: var(--neutral-700);
+            border-style: solid;
+        }
+
+        .upload-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 15px;
+            opacity: 0.6;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .preview-container {
+            position: relative;
+            display: none;
+            margin-top: 15px;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .remove-image {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--error);
+            color: var(--error-foreground);
+            border: none;
+            border-radius: var(--radius-full);
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .text-input-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .text-input {
+            flex: 1;
+            min-height: 200px;
+            padding: var(--space-4);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            font-size: var(--text-base);
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color var(--transition-base) var(--ease-in-out);
+            background: var(--input);
+            color: var(--foreground);
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: var(--ring);
+        }
+
+        .token-counter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--space-3);
+            padding: var(--space-3);
+            background: var(--muted);
+            border-radius: var(--radius-lg);
+        }
+
+        .token-count {
+            font-size: var(--text-sm);
+            color: var(--muted-foreground);
+        }
+
+        .token-limit-bar {
+            width: 150px;
+            height: 6px;
+            background: var(--neutral-800);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        .token-limit-fill {
+            height: 100%;
+            background: var(--gradient-success);
+            transition: width var(--transition-base) var(--ease-in-out), background var(--transition-base) var(--ease-in-out);
+        }
+
+        .token-limit-fill.warning {
+            background: linear-gradient(90deg, var(--warning), var(--warning));
+        }
+
+        .token-limit-fill.danger {
+            background: var(--gradient-error);
+        }
+
+        .options-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .option-label {
+            font-size: var(--text-sm);
+            color: var(--muted-foreground);
+            font-weight: var(--font-medium);
+        }
+
+        .option-select {
+            padding: var(--space-2) var(--space-3);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            background: var(--input);
+            color: var(--foreground);
+            font-size: var(--text-base);
+            cursor: pointer;
+            transition: border-color var(--transition-base) var(--ease-in-out);
+        }
+
+        .option-select:focus {
+            outline: none;
+            border-color: var(--ring);
+        }
+
+        .process-button {
+            background: var(--gradient-success);
+            color: var(--foreground);
+            border: none;
+            padding: var(--space-4) var(--space-10);
+            font-size: var(--text-lg);
+            font-weight: var(--font-semibold);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all var(--transition-base) var(--ease-in-out);
+            width: 100%;
+            margin-bottom: var(--space-8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-3);
+        }
+
+        .process-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
+        }
+
+        .process-button:disabled {
+            background: var(--muted);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.5;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid var(--foreground);
+            border-radius: var(--radius-full);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .results-header {
+            font-size: var(--text-2xl);
+            font-weight: var(--font-semibold);
+            margin-bottom: var(--space-5);
+            color: var(--foreground);
+        }
+
+        .similarity-card {
+            background: var(--muted);
+            border-radius: var(--radius-lg);
+            padding: var(--space-5);
+            margin-bottom: var(--space-5);
+            border-left: 4px solid var(--accent);
+        }
+
+        .similarity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .similarity-title {
+            font-weight: var(--font-semibold);
+            color: var(--foreground);
+            font-size: var(--text-lg);
+        }
+
+        .similarity-score {
+            font-size: var(--text-2xl);
+            font-weight: var(--font-bold);
+            color: var(--accent-foreground);
+        }
+
+        .similarity-bar {
+            height: 12px;
+            background: var(--neutral-800);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: var(--space-4);
+        }
+
+        .similarity-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            transition: width var(--transition-slow) var(--ease-in-out);
+        }
+
+        .classification-results {
+            display: grid;
+            gap: 10px;
+        }
+
+        .class-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-3);
+            background: var(--card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+        }
+
+        .class-label {
+            font-weight: var(--font-medium);
+            color: var(--foreground);
+        }
+
+        .class-confidence {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .confidence-value {
+            font-weight: var(--font-semibold);
+            color: var(--muted-foreground);
+            min-width: 50px;
+            text-align: right;
+        }
+
+        .confidence-bar {
+            width: 100px;
+            height: 6px;
+            background: var(--neutral-800);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: var(--gradient-success);
+            transition: width var(--transition-slow) var(--ease-in-out);
+        }
+
+        .embeddings-section {
+            background: var(--muted);
+            border-radius: var(--radius-lg);
+            padding: var(--space-5);
+            margin-top: var(--space-5);
+            border: 2px dashed var(--border);
+            text-align: center;
+        }
+
+        .embeddings-placeholder {
+            color: var(--muted-foreground);
+            font-size: var(--text-sm);
+            padding: var(--space-10);
+        }
+
+        .error-message {
+            display: none;
+            background: var(--error-muted);
+            border: 1px solid var(--error);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            color: var(--error);
+            margin-bottom: var(--space-5);
+        }
+
+        .success-message {
+            display: none;
+            background: var(--success-muted);
+            border: 1px solid var(--success);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            color: var(--success);
+            margin-bottom: var(--space-5);
+        }
+
+        .model-info {
+            background: var(--muted);
+            border-radius: var(--radius-lg);
+            padding: var(--space-5);
+            margin-top: var(--space-8);
+            border-left: 4px solid var(--accent);
+        }
+
+        .model-info h3 {
+            color: var(--foreground);
+            margin-bottom: var(--space-4);
+        }
+
+        .model-info p {
+            color: var(--muted-foreground);
+            font-size: var(--text-sm);
+            margin-bottom: var(--space-3);
+        }
+
+        .model-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-3);
+            margin-top: var(--space-4);
+        }
+
+        .feature-tag {
+            background: var(--accent);
+            color: var(--accent-foreground);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--text-sm);
+            font-weight: var(--font-semibold);
+        }
+
+        @media (max-width: 768px) {
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mode-button {
+                min-width: 100%;
+            }
+
+            .options-row {
+                flex-direction: column;
+            }
+
+            .confidence-bar {
+                width: 60px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Vision-Language Understanding</h1>
+            <p>Multimodal AI for zero-shot classification, image-text matching, and cross-modal retrieval</p>
+        </header>
+
+        <main class="main-content">
+            <div class="error-message" id="errorMessage" role="alert"></div>
+            <div class="success-message" id="successMessage" role="alert"></div>
+
+            <!-- Mode Selection -->
+            <div class="mode-selector">
+                <button class="mode-button active" id="zeroShotMode" data-mode="zero-shot">
+                    Zero-shot Classification
+                </button>
+                <button class="mode-button" id="matchingMode" data-mode="matching">
+                    Image-Text Matching
+                </button>
+                <button class="mode-button" id="searchMode" data-mode="search">
+                    Image Search
+                </button>
+            </div>
+
+            <!-- Input Section -->
+            <section class="input-section">
+                <div class="input-grid">
+                    <!-- Image Input Column -->
+                    <div class="input-column">
+                        <div class="input-label">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                            Image Input (224x224)
+                        </div>
+                        <div class="upload-area" id="uploadArea" tabindex="0" role="button" aria-label="Upload image">
+                            <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7,10 12,15 17,10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            <div>Drop image here or click to browse</div>
+                            <div style="font-size: 0.85rem; color: #9ca3af; margin-top: 5px;">
+                                JPEG, PNG, WebP (max 10MB)
+                            </div>
+                        </div>
+                        <input type="file" id="fileInput" class="file-input" accept="image/jpeg,image/jpg,image/png,image/webp">
+                        <div class="preview-container" id="previewContainer">
+                            <img id="previewImage" class="preview-image" alt="Preview">
+                            <button class="remove-image" id="removeImage" aria-label="Remove image">×</button>
+                        </div>
+                    </div>
+
+                    <!-- Text Input Column -->
+                    <div class="input-column">
+                        <div class="input-label">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            Text Input (77 tokens max)
+                        </div>
+                        <div class="text-input-container">
+                            <textarea
+                                class="text-input"
+                                id="textInput"
+                                placeholder="Enter text description for classification, matching, or search..."
+                                aria-label="Text input"
+                            ></textarea>
+                            <div class="token-counter">
+                                <span class="token-count">
+                                    <span id="charCount">0</span> chars | ~<span id="tokenCount">0</span> tokens
+                                </span>
+                                <div class="token-limit-bar">
+                                    <div class="token-limit-fill" id="tokenBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Options Row -->
+                <div class="options-row">
+                    <div class="option-group">
+                        <label class="option-label" for="languageSelect">Language</label>
+                        <select class="option-select" id="languageSelect">
+                            <option value="en">English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                            <option value="zh">Chinese</option>
+                            <option value="ja">Japanese</option>
+                            <option value="ko">Korean</option>
+                            <option value="ar">Arabic</option>
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label class="option-label" for="modelSelect">Model</label>
+                        <select class="option-select" id="modelSelect">
+                            <option value="clip">CLIP ViT-B/32</option>
+                            <option value="clip-large">CLIP ViT-L/14</option>
+                            <option value="align">ALIGN</option>
+                            <option value="blip">BLIP</option>
+                        </select>
+                    </div>
+                    <div class="option-group" id="topKGroup" style="display: none;">
+                        <label class="option-label" for="topKSelect">Top K Results</label>
+                        <select class="option-select" id="topKSelect">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <button class="process-button" id="processButton" disabled>
+                <div class="loading-spinner" id="loadingSpinner"></div>
+                <span id="buttonText">Select image and text to process</span>
+            </button>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection">
+                <h2 class="results-header" id="resultsHeader">Results</h2>
+
+                <!-- Zero-shot Classification Results -->
+                <div id="classificationResults" style="display: none;">
+                    <div class="similarity-card">
+                        <div class="similarity-header">
+                            <div class="similarity-title">Zero-shot Classification</div>
+                            <div class="similarity-score" id="topScore">-</div>
+                        </div>
+                        <div class="classification-results" id="classificationList"></div>
+                    </div>
+                </div>
+
+                <!-- Image-Text Matching Results -->
+                <div id="matchingResults" style="display: none;">
+                    <div class="similarity-card">
+                        <div class="similarity-header">
+                            <div class="similarity-title">Image-Text Similarity</div>
+                            <div class="similarity-score" id="similarityScore">-</div>
+                        </div>
+                        <div class="similarity-bar">
+                            <div class="similarity-fill" id="similarityBar" style="width: 0%"></div>
+                        </div>
+                        <div style="color: #6b7280; font-size: 0.9rem;">
+                            Contrastive similarity score between image and text embeddings
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Search Results -->
+                <div id="searchResults" style="display: none;">
+                    <div class="similarity-card">
+                        <div class="similarity-header">
+                            <div class="similarity-title">Image Search Results</div>
+                        </div>
+                        <div id="searchList"></div>
+                    </div>
+                </div>
+
+                <!-- Embeddings Visualization -->
+                <div class="embeddings-section">
+                    <h3 style="margin-bottom: 10px; color: #374151;">Embedding Visualization</h3>
+                    <div class="embeddings-placeholder">
+                        Interactive embedding visualization would appear here.<br>
+                        Showing 512-dimensional embeddings projected to 2D space.
+                    </div>
+                </div>
+            </section>
+
+            <div class="model-info">
+                <h3>About Vision-Language Models</h3>
+                <p>This interface demonstrates multimodal AI capabilities using state-of-the-art vision-language models like CLIP, ALIGN, and BLIP. These models learn joint representations of images and text through contrastive learning.</p>
+                <p><strong>Key Features:</strong></p>
+                <p>• Zero-shot classification without training on specific classes<br>
+                   • Cross-modal retrieval between images and text<br>
+                   • Multi-lingual understanding capabilities<br>
+                   • 224x224 image resolution with 77-token text limit<br>
+                   • Contrastive learning for robust multimodal embeddings</p>
+                <div class="model-features">
+                    <span class="feature-tag">CLIP</span>
+                    <span class="feature-tag">ALIGN</span>
+                    <span class="feature-tag">BLIP</span>
+                    <span class="feature-tag">Zero-shot</span>
+                    <span class="feature-tag">Multimodal</span>
+                    <span class="feature-tag">77 Tokens</span>
+                    <span class="feature-tag">224x224</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        class VisionLanguageApp {
+            constructor() {
+                this.apiEndpoint = '/vision-language/predict';
+                this.mode = 'zero-shot';
+                this.maxTokens = 77;
+                this.targetResolution = 224;
+                this.currentImage = null;
+                this.currentText = '';
+
+                this.initializeElements();
+                this.bindEvents();
+            }
+
+            initializeElements() {
+                // Mode buttons
+                this.modeButtons = document.querySelectorAll('.mode-button');
+
+                // Image upload
+                this.uploadArea = document.getElementById('uploadArea');
+                this.fileInput = document.getElementById('fileInput');
+                this.previewContainer = document.getElementById('previewContainer');
+                this.previewImage = document.getElementById('previewImage');
+                this.removeImageBtn = document.getElementById('removeImage');
+
+                // Text input
+                this.textInput = document.getElementById('textInput');
+                this.charCount = document.getElementById('charCount');
+                this.tokenCount = document.getElementById('tokenCount');
+                this.tokenBar = document.getElementById('tokenBar');
+
+                // Options
+                this.languageSelect = document.getElementById('languageSelect');
+                this.modelSelect = document.getElementById('modelSelect');
+                this.topKGroup = document.getElementById('topKGroup');
+                this.topKSelect = document.getElementById('topKSelect');
+
+                // Process button
+                this.processButton = document.getElementById('processButton');
+                this.buttonText = document.getElementById('buttonText');
+                this.loadingSpinner = document.getElementById('loadingSpinner');
+
+                // Results
+                this.resultsSection = document.getElementById('resultsSection');
+                this.resultsHeader = document.getElementById('resultsHeader');
+                this.classificationResults = document.getElementById('classificationResults');
+                this.matchingResults = document.getElementById('matchingResults');
+                this.searchResults = document.getElementById('searchResults');
+
+                // Messages
+                this.errorMessage = document.getElementById('errorMessage');
+                this.successMessage = document.getElementById('successMessage');
+            }
+
+            bindEvents() {
+                // Mode selection
+                this.modeButtons.forEach(button => {
+                    button.addEventListener('click', (e) => this.switchMode(e.target.dataset.mode));
+                });
+
+                // Image upload
+                this.uploadArea.addEventListener('click', () => this.fileInput.click());
+                this.uploadArea.addEventListener('dragover', (e) => this.handleDragOver(e));
+                this.uploadArea.addEventListener('dragleave', (e) => this.handleDragLeave(e));
+                this.uploadArea.addEventListener('drop', (e) => this.handleDrop(e));
+                this.fileInput.addEventListener('change', (e) => this.handleFileSelect(e));
+                this.removeImageBtn.addEventListener('click', () => this.removeImage());
+
+                // Text input
+                this.textInput.addEventListener('input', () => this.updateTokenCount());
+
+                // Process button
+                this.processButton.addEventListener('click', () => this.processInputs());
+            }
+
+            switchMode(mode) {
+                this.mode = mode;
+                this.modeButtons.forEach(button => {
+                    button.classList.toggle('active', button.dataset.mode === mode);
+                });
+
+                // Show/hide top-k option for search mode
+                this.topKGroup.style.display = mode === 'search' ? 'block' : 'none';
+
+                // Update button text
+                this.updateProcessButton();
+                this.hideResults();
+            }
+
+            handleDragOver(e) {
+                e.preventDefault();
+                this.uploadArea.classList.add('dragover');
+            }
+
+            handleDragLeave(e) {
+                e.preventDefault();
+                this.uploadArea.classList.remove('dragover');
+            }
+
+            handleDrop(e) {
+                e.preventDefault();
+                this.uploadArea.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    this.processFile(files[0]);
+                }
+            }
+
+            handleFileSelect(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    this.processFile(file);
+                }
+            }
+
+            processFile(file) {
+                if (!this.validateFile(file)) {
+                    return;
+                }
+
+                this.currentImage = file;
+                this.displayPreview(file);
+                this.updateProcessButton();
+            }
+
+            validateFile(file) {
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+                const maxSize = 10 * 1024 * 1024; // 10MB
+
+                if (!allowedTypes.includes(file.type)) {
+                    this.showError('Please select a valid image file (JPEG, PNG, or WebP).');
+                    return false;
+                }
+
+                if (file.size > maxSize) {
+                    this.showError('File size must be less than 10MB.');
+                    return false;
+                }
+
+                return true;
+            }
+
+            displayPreview(file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.previewImage.src = e.target.result;
+                    this.previewContainer.style.display = 'block';
+                    this.uploadArea.style.display = 'none';
+
+                    // Check image dimensions
+                    this.previewImage.onload = () => {
+                        const width = this.previewImage.naturalWidth;
+                        const height = this.previewImage.naturalHeight;
+                        if (width !== this.targetResolution || height !== this.targetResolution) {
+                            this.showMessage(`Image will be resized to ${this.targetResolution}x${this.targetResolution}`, 'info');
+                        }
+                    };
+                };
+                reader.readAsDataURL(file);
+            }
+
+            removeImage() {
+                this.currentImage = null;
+                this.previewContainer.style.display = 'none';
+                this.uploadArea.style.display = 'flex';
+                this.fileInput.value = '';
+                this.updateProcessButton();
+                this.hideMessages();
+            }
+
+            updateTokenCount() {
+                const text = this.textInput.value;
+                this.currentText = text;
+                const charCount = text.length;
+
+                // Approximate token count (CLIP uses ~3 chars per token)
+                const approxTokens = Math.ceil(charCount / 3);
+
+                this.charCount.textContent = charCount;
+                this.tokenCount.textContent = approxTokens;
+
+                // Update token bar
+                const tokenPercentage = Math.min((approxTokens / this.maxTokens) * 100, 100);
+                this.tokenBar.style.width = tokenPercentage + '%';
+
+                // Update bar color
+                this.tokenBar.classList.remove('warning', 'danger');
+                if (tokenPercentage > 90) {
+                    this.tokenBar.classList.add('danger');
+                } else if (tokenPercentage > 75) {
+                    this.tokenBar.classList.add('warning');
+                }
+
+                this.updateProcessButton();
+            }
+
+            updateProcessButton() {
+                const hasImage = this.currentImage !== null;
+                const hasText = this.currentText.trim().length > 0;
+
+                if (hasImage && hasText) {
+                    this.processButton.disabled = false;
+                    switch(this.mode) {
+                        case 'zero-shot':
+                            this.buttonText.textContent = 'Classify Image';
+                            break;
+                        case 'matching':
+                            this.buttonText.textContent = 'Calculate Similarity';
+                            break;
+                        case 'search':
+                            this.buttonText.textContent = 'Search Images';
+                            break;
+                    }
+                } else {
+                    this.processButton.disabled = true;
+                    this.buttonText.textContent = 'Select image and text to process';
+                }
+            }
+
+            async processInputs() {
+                this.setLoading(true);
+                this.hideMessages();
+                this.hideResults();
+
+                try {
+                    // Simulate API call
+                    await this.simulateApiCall();
+
+                    switch(this.mode) {
+                        case 'zero-shot':
+                            this.displayClassificationResults();
+                            break;
+                        case 'matching':
+                            this.displayMatchingResults();
+                            break;
+                        case 'search':
+                            this.displaySearchResults();
+                            break;
+                    }
+
+                    this.showSuccess(`${this.getModeTitle()} completed successfully!`);
+                    this.resultsSection.style.display = 'block';
+                    this.resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+                } catch (error) {
+                    this.showError(`Processing failed: ${error.message}`);
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            async simulateApiCall() {
+                // Simulate network delay
+                return new Promise(resolve => setTimeout(resolve, 2000));
+            }
+
+            displayClassificationResults() {
+                this.resultsHeader.textContent = 'Zero-shot Classification Results';
+                this.classificationResults.style.display = 'block';
+                this.matchingResults.style.display = 'none';
+                this.searchResults.style.display = 'none';
+
+                // Generate mock classes based on text input
+                const classes = this.generateMockClasses();
+                const topScore = classes[0].confidence;
+
+                document.getElementById('topScore').textContent = `${(topScore * 100).toFixed(1)}%`;
+
+                const classificationList = document.getElementById('classificationList');
+                classificationList.innerHTML = '';
+
+                classes.forEach(cls => {
+                    const item = document.createElement('div');
+                    item.className = 'class-item';
+                    item.innerHTML = `
+                        <div class="class-label">${cls.label}</div>
+                        <div class="class-confidence">
+                            <div class="confidence-value">${(cls.confidence * 100).toFixed(1)}%</div>
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" style="width: ${cls.confidence * 100}%"></div>
+                            </div>
+                        </div>
+                    `;
+                    classificationList.appendChild(item);
+                });
+            }
+
+            displayMatchingResults() {
+                this.resultsHeader.textContent = 'Image-Text Matching Results';
+                this.classificationResults.style.display = 'none';
+                this.matchingResults.style.display = 'block';
+                this.searchResults.style.display = 'none';
+
+                // Generate mock similarity score
+                const similarity = 0.65 + Math.random() * 0.3;
+
+                document.getElementById('similarityScore').textContent = similarity.toFixed(3);
+                document.getElementById('similarityBar').style.width = `${similarity * 100}%`;
+            }
+
+            displaySearchResults() {
+                this.resultsHeader.textContent = 'Image Search Results';
+                this.classificationResults.style.display = 'none';
+                this.matchingResults.style.display = 'none';
+                this.searchResults.style.display = 'block';
+
+                const searchList = document.getElementById('searchList');
+                searchList.innerHTML = '';
+
+                const topK = parseInt(this.topKSelect.value);
+                const results = this.generateMockSearchResults(topK);
+
+                results.forEach((result, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'class-item';
+                    item.innerHTML = `
+                        <div class="class-label">Image ${index + 1}: ${result.description}</div>
+                        <div class="class-confidence">
+                            <div class="confidence-value">${(result.similarity * 100).toFixed(1)}%</div>
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" style="width: ${result.similarity * 100}%"></div>
+                            </div>
+                        </div>
+                    `;
+                    searchList.appendChild(item);
+                });
+            }
+
+            generateMockClasses() {
+                const textWords = this.currentText.toLowerCase().split(' ');
+                const categories = [
+                    'Object', 'Person', 'Animal', 'Scene', 'Action',
+                    'Nature', 'Technology', 'Art', 'Food', 'Vehicle'
+                ];
+
+                return categories.slice(0, 5).map((cat, i) => ({
+                    label: cat,
+                    confidence: Math.max(0.1, 0.95 - i * 0.15 - Math.random() * 0.1)
+                }));
+            }
+
+            generateMockSearchResults(topK) {
+                const results = [];
+                for (let i = 0; i < topK; i++) {
+                    results.push({
+                        description: `Match ${i + 1} with relevant content`,
+                        similarity: Math.max(0.3, 0.95 - i * (0.6 / topK) - Math.random() * 0.1)
+                    });
+                }
+                return results;
+            }
+
+            getModeTitle() {
+                switch(this.mode) {
+                    case 'zero-shot': return 'Zero-shot classification';
+                    case 'matching': return 'Image-text matching';
+                    case 'search': return 'Image search';
+                    default: return 'Processing';
+                }
+            }
+
+            setLoading(isLoading) {
+                if (isLoading) {
+                    this.processButton.disabled = true;
+                    this.loadingSpinner.style.display = 'inline-block';
+                    this.buttonText.textContent = 'Processing...';
+                } else {
+                    this.loadingSpinner.style.display = 'none';
+                    this.updateProcessButton();
+                }
+            }
+
+            showError(message) {
+                this.errorMessage.textContent = message;
+                this.errorMessage.style.display = 'block';
+            }
+
+            showSuccess(message) {
+                this.successMessage.textContent = message;
+                this.successMessage.style.display = 'block';
+            }
+
+            showMessage(message, type = 'info') {
+                if (type === 'error') {
+                    this.showError(message);
+                } else {
+                    this.showSuccess(message);
+                }
+            }
+
+            hideMessages() {
+                this.errorMessage.style.display = 'none';
+                this.successMessage.style.display = 'none';
+            }
+
+            hideResults() {
+                this.resultsSection.style.display = 'none';
+            }
+        }
+
+        // Initialize app when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new VisionLanguageApp();
+        });
+
+        // Global error handler
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('Unhandled promise rejection:', event.reason);
+        });
+    </script>
+</body>
+</html>

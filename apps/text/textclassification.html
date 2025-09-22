@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Classification Web App</title>
+    <link rel="stylesheet" href="../global.css">
+    <style>
+        body {
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-2xl);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--gradient-primary);
+            color: var(--foreground);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: var(--text-4xl);
+            font-weight: var(--font-bold);
+            margin-bottom: var(--space-3);
+        }
+
+        .header p {
+            font-size: var(--text-lg);
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: var(--space-10);
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        .input-mode-toggle {
+            display: flex;
+            gap: var(--space-3);
+            margin-bottom: var(--space-5);
+        }
+
+        .mode-button {
+            flex: 1;
+            padding: var(--space-3);
+            border: 2px solid var(--border);
+            background: var(--muted);
+            color: var(--muted-foreground);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all var(--transition-base) var(--ease-in-out);
+            font-weight: var(--font-semibold);
+        }
+
+        .mode-button.active {
+            background: var(--gradient-primary);
+            color: var(--foreground);
+            border-color: var(--accent);
+        }
+
+        .text-input-container {
+            position: relative;
+        }
+
+        .text-input {
+            width: 100%;
+            min-height: 200px;
+            padding: var(--space-4);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            font-size: var(--text-base);
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color var(--transition-base) var(--ease-in-out);
+            background: var(--input);
+            color: var(--foreground);
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: var(--ring);
+        }
+
+        .batch-input-container {
+            display: none;
+        }
+
+        .batch-text-item {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .batch-text-input {
+            width: 100%;
+            min-height: 100px;
+            padding: var(--space-4);
+            padding-right: 50px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            font-size: var(--text-base);
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color var(--transition-base) var(--ease-in-out);
+            background: var(--input);
+            color: var(--foreground);
+        }
+
+        .remove-batch-item {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--error);
+            color: var(--error-foreground);
+            border: none;
+            border-radius: var(--radius-full);
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .add-batch-item {
+            background: var(--gradient-success);
+            color: var(--foreground);
+            border: none;
+            padding: var(--space-3) var(--space-5);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            font-weight: var(--font-semibold);
+            margin-top: var(--space-3);
+        }
+
+        .token-counter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--space-3);
+            padding: var(--space-3);
+            background: var(--muted);
+            border-radius: var(--radius-lg);
+        }
+
+        .token-count {
+            font-size: var(--text-sm);
+            color: var(--muted-foreground);
+        }
+
+        .token-limit-bar {
+            width: 200px;
+            height: 6px;
+            background: var(--neutral-800);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        .token-limit-fill {
+            height: 100%;
+            background: var(--gradient-success);
+            transition: width var(--transition-base) var(--ease-in-out), background var(--transition-base) var(--ease-in-out);
+        }
+
+        .token-limit-fill.warning {
+            background: linear-gradient(90deg, var(--warning), var(--warning));
+        }
+
+        .token-limit-fill.danger {
+            background: var(--gradient-error);
+        }
+
+        .classify-button {
+            background: var(--gradient-success);
+            color: var(--foreground);
+            border: none;
+            padding: var(--space-4) var(--space-10);
+            font-size: var(--text-lg);
+            font-weight: var(--font-semibold);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all var(--transition-base) var(--ease-in-out);
+            width: 100%;
+            margin-bottom: var(--space-8);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-3);
+        }
+
+        .classify-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+            opacity: 0.95;
+        }
+
+        .classify-button:disabled {
+            background: var(--muted);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.5;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid var(--foreground);
+            border-radius: var(--radius-full);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .results-header {
+            font-size: var(--text-2xl);
+            font-weight: var(--font-semibold);
+            margin-bottom: var(--space-5);
+            color: var(--foreground);
+        }
+
+        .metrics-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+
+        .metric-card {
+            background: var(--muted);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            text-align: center;
+            border-left: 4px solid var(--accent);
+        }
+
+        .metric-label {
+            font-size: var(--text-sm);
+            color: var(--muted-foreground);
+            margin-bottom: var(--space-2);
+        }
+
+        .metric-value {
+            font-size: var(--text-2xl);
+            font-weight: var(--font-bold);
+            color: var(--foreground);
+        }
+
+        .prediction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-4);
+            margin-bottom: var(--space-3);
+            background: var(--muted);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--accent);
+        }
+
+        .prediction-label {
+            font-weight: var(--font-semibold);
+            color: var(--foreground);
+        }
+
+        .prediction-confidence {
+            font-weight: var(--font-medium);
+            color: var(--muted-foreground);
+        }
+
+        .confidence-bar {
+            width: 100px;
+            height: 6px;
+            background: var(--neutral-800);
+            border-radius: var(--radius-sm);
+            margin-left: var(--space-4);
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: var(--gradient-success);
+            border-radius: var(--radius-sm);
+            transition: width var(--transition-slow) var(--ease-in-out);
+        }
+
+        .batch-results {
+            display: none;
+        }
+
+        .batch-result-item {
+            background: var(--muted);
+            border-radius: var(--radius-lg);
+            padding: var(--space-5);
+            margin-bottom: var(--space-4);
+            border-left: 4px solid var(--primary);
+        }
+
+        .batch-result-text {
+            font-size: var(--text-sm);
+            color: var(--muted-foreground);
+            margin-bottom: var(--space-3);
+            padding: var(--space-3);
+            background: var(--card);
+            border-radius: var(--radius-md);
+            border-left: 3px solid var(--border);
+            max-height: 100px;
+            overflow-y: auto;
+        }
+
+        .error-message {
+            display: none;
+            background: var(--error-muted);
+            border: 1px solid var(--error);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            color: var(--error);
+            margin-bottom: var(--space-5);
+        }
+
+        .success-message {
+            display: none;
+            background: var(--success-muted);
+            border: 1px solid var(--success);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            color: var(--success);
+            margin-bottom: var(--space-5);
+        }
+
+        .model-info {
+            background: var(--muted);
+            border-radius: var(--radius-lg);
+            padding: var(--space-5);
+            margin-top: var(--space-8);
+            border-left: 4px solid var(--accent);
+        }
+
+        .model-info h3 {
+            color: var(--foreground);
+            margin-bottom: var(--space-4);
+        }
+
+        .model-info p {
+            color: var(--muted-foreground);
+            font-size: var(--text-sm);
+            margin-bottom: var(--space-3);
+        }
+
+        .model-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-3);
+            margin-top: var(--space-4);
+        }
+
+        .feature-tag {
+            background: var(--accent);
+            color: var(--accent-foreground);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--text-sm);
+            font-weight: var(--font-semibold);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .prediction-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .confidence-bar {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .metrics-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Text Classification</h1>
+            <p>Classify text documents using transformer-based deep learning models</p>
+        </header>
+
+        <main class="main-content">
+            <div class="error-message" id="errorMessage" role="alert"></div>
+            <div class="success-message" id="successMessage" role="alert"></div>
+
+            <section class="input-section">
+                <div class="input-mode-toggle">
+                    <button class="mode-button active" id="singleModeBtn">Single Text</button>
+                    <button class="mode-button" id="batchModeBtn">Batch Classification</button>
+                </div>
+
+                <!-- Single Text Input -->
+                <div class="text-input-container" id="singleInputContainer">
+                    <textarea
+                        class="text-input"
+                        id="textInput"
+                        placeholder="Enter your text here for classification... (Maximum 512 tokens)"
+                        aria-label="Text to classify"
+                    ></textarea>
+                    <div class="token-counter">
+                        <span class="token-count" id="tokenCount">
+                            <span id="charCount">0</span> characters | ~<span id="approxTokens">0</span> tokens
+                        </span>
+                        <div class="token-limit-bar">
+                            <div class="token-limit-fill" id="tokenBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Batch Text Input -->
+                <div class="batch-input-container" id="batchInputContainer">
+                    <div id="batchTextItems">
+                        <div class="batch-text-item">
+                            <textarea
+                                class="batch-text-input"
+                                placeholder="Text 1 - Enter text for classification"
+                                aria-label="Batch text 1"
+                            ></textarea>
+                            <button class="remove-batch-item" aria-label="Remove text">×</button>
+                        </div>
+                        <div class="batch-text-item">
+                            <textarea
+                                class="batch-text-input"
+                                placeholder="Text 2 - Enter text for classification"
+                                aria-label="Batch text 2"
+                            ></textarea>
+                            <button class="remove-batch-item" aria-label="Remove text">×</button>
+                        </div>
+                    </div>
+                    <button class="add-batch-item" id="addBatchItem">+ Add Another Text</button>
+                </div>
+            </section>
+
+            <button class="classify-button" id="classifyButton">
+                <div class="loading-spinner" id="loadingSpinner"></div>
+                <span id="buttonText">Classify Text</span>
+            </button>
+
+            <section class="results-section" id="resultsSection">
+                <h2 class="results-header">Classification Results</h2>
+
+                <!-- Metrics Summary (for single classification) -->
+                <div class="metrics-summary" id="metricsSummary">
+                    <div class="metric-card">
+                        <div class="metric-label">F1 Score</div>
+                        <div class="metric-value" id="f1Score">-</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Confidence</div>
+                        <div class="metric-value" id="topConfidence">-</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Processing Time</div>
+                        <div class="metric-value" id="processingTime">-</div>
+                    </div>
+                </div>
+
+                <!-- Single Text Results -->
+                <div id="predictionsList"></div>
+
+                <!-- Batch Results -->
+                <div class="batch-results" id="batchResults"></div>
+            </section>
+
+            <div class="model-info">
+                <h3>About This Model</h3>
+                <p>This text classification system leverages state-of-the-art transformer models including BERT, RoBERTa, and DistilBERT variants, fine-tuned for high-accuracy document categorization.</p>
+                <p><strong>Key Features:</strong></p>
+                <p>• Maximum sequence length: 512 tokens<br>
+                   • Class weight balancing for imbalanced datasets<br>
+                   • Attention weight visualization for interpretability<br>
+                   • Confidence calibration for reliable predictions<br>
+                   • Batch inference capabilities for processing multiple texts</p>
+                <div class="model-features">
+                    <span class="feature-tag">BERT</span>
+                    <span class="feature-tag">RoBERTa</span>
+                    <span class="feature-tag">DistilBERT</span>
+                    <span class="feature-tag">F1 > 0.85</span>
+                    <span class="feature-tag">512 Tokens</span>
+                    <span class="feature-tag">REST API</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        class TextClassifier {
+            constructor() {
+                this.apiEndpoint = '/predict';
+                this.maxTokens = 512;
+                this.mode = 'single'; // 'single' or 'batch'
+                this.batchTexts = [];
+
+                this.initializeElements();
+                this.bindEvents();
+            }
+
+            initializeElements() {
+                // Mode buttons
+                this.singleModeBtn = document.getElementById('singleModeBtn');
+                this.batchModeBtn = document.getElementById('batchModeBtn');
+
+                // Input containers
+                this.singleInputContainer = document.getElementById('singleInputContainer');
+                this.batchInputContainer = document.getElementById('batchInputContainer');
+                this.batchTextItems = document.getElementById('batchTextItems');
+
+                // Text input
+                this.textInput = document.getElementById('textInput');
+                this.charCount = document.getElementById('charCount');
+                this.approxTokens = document.getElementById('approxTokens');
+                this.tokenBar = document.getElementById('tokenBar');
+
+                // Buttons
+                this.classifyButton = document.getElementById('classifyButton');
+                this.buttonText = document.getElementById('buttonText');
+                this.loadingSpinner = document.getElementById('loadingSpinner');
+                this.addBatchItemBtn = document.getElementById('addBatchItem');
+
+                // Results
+                this.resultsSection = document.getElementById('resultsSection');
+                this.metricsSummary = document.getElementById('metricsSummary');
+                this.predictionsList = document.getElementById('predictionsList');
+                this.batchResults = document.getElementById('batchResults');
+                this.f1Score = document.getElementById('f1Score');
+                this.topConfidence = document.getElementById('topConfidence');
+                this.processingTime = document.getElementById('processingTime');
+
+                // Messages
+                this.errorMessage = document.getElementById('errorMessage');
+                this.successMessage = document.getElementById('successMessage');
+            }
+
+            bindEvents() {
+                // Mode switching
+                this.singleModeBtn.addEventListener('click', () => this.switchMode('single'));
+                this.batchModeBtn.addEventListener('click', () => this.switchMode('batch'));
+
+                // Text input events
+                this.textInput.addEventListener('input', () => this.updateTokenCount());
+                this.textInput.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey && e.key === 'Enter') {
+                        this.classifyText();
+                    }
+                });
+
+                // Classify button
+                this.classifyButton.addEventListener('click', () => this.classifyText());
+
+                // Batch mode events
+                this.addBatchItemBtn.addEventListener('click', () => this.addBatchTextItem());
+                this.batchInputContainer.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('remove-batch-item')) {
+                        this.removeBatchTextItem(e.target);
+                    }
+                });
+            }
+
+            switchMode(mode) {
+                this.mode = mode;
+                this.hideMessages();
+                this.hideResults();
+
+                if (mode === 'single') {
+                    this.singleModeBtn.classList.add('active');
+                    this.batchModeBtn.classList.remove('active');
+                    this.singleInputContainer.style.display = 'block';
+                    this.batchInputContainer.style.display = 'none';
+                } else {
+                    this.singleModeBtn.classList.remove('active');
+                    this.batchModeBtn.classList.add('active');
+                    this.singleInputContainer.style.display = 'none';
+                    this.batchInputContainer.style.display = 'block';
+                }
+            }
+
+            updateTokenCount() {
+                const text = this.textInput.value;
+                const charCount = text.length;
+
+                // Approximate token count (rough estimate: ~4 chars per token)
+                const approxTokens = Math.ceil(charCount / 4);
+
+                this.charCount.textContent = charCount;
+                this.approxTokens.textContent = approxTokens;
+
+                // Update token bar
+                const tokenPercentage = Math.min((approxTokens / this.maxTokens) * 100, 100);
+                this.tokenBar.style.width = tokenPercentage + '%';
+
+                // Update bar color based on percentage
+                this.tokenBar.classList.remove('warning', 'danger');
+                if (tokenPercentage > 90) {
+                    this.tokenBar.classList.add('danger');
+                } else if (tokenPercentage > 75) {
+                    this.tokenBar.classList.add('warning');
+                }
+
+                // Update button state
+                this.updateClassifyButton();
+            }
+
+            updateClassifyButton() {
+                const hasText = this.mode === 'single'
+                    ? this.textInput.value.trim().length > 0
+                    : this.getBatchTexts().some(text => text.trim().length > 0);
+
+                if (hasText) {
+                    this.classifyButton.disabled = false;
+                    this.buttonText.textContent = this.mode === 'single'
+                        ? 'Classify Text'
+                        : `Classify ${this.getBatchTexts().filter(t => t.trim()).length} Texts`;
+                } else {
+                    this.classifyButton.disabled = true;
+                    this.buttonText.textContent = 'Enter text to classify';
+                }
+            }
+
+            addBatchTextItem() {
+                const itemCount = this.batchTextItems.children.length;
+                const newItem = document.createElement('div');
+                newItem.className = 'batch-text-item';
+                newItem.innerHTML = `
+                    <textarea
+                        class="batch-text-input"
+                        placeholder="Text ${itemCount + 1} - Enter text for classification"
+                        aria-label="Batch text ${itemCount + 1}"
+                    ></textarea>
+                    <button class="remove-batch-item" aria-label="Remove text">×</button>
+                `;
+
+                this.batchTextItems.insertBefore(newItem, this.addBatchItemBtn.parentElement);
+
+                // Add input event listener
+                const textarea = newItem.querySelector('.batch-text-input');
+                textarea.addEventListener('input', () => this.updateClassifyButton());
+            }
+
+            removeBatchTextItem(button) {
+                const items = this.batchTextItems.querySelectorAll('.batch-text-item');
+                if (items.length > 1) {
+                    button.closest('.batch-text-item').remove();
+                    this.updateBatchPlaceholders();
+                    this.updateClassifyButton();
+                }
+            }
+
+            updateBatchPlaceholders() {
+                const items = this.batchTextItems.querySelectorAll('.batch-text-item');
+                items.forEach((item, index) => {
+                    const textarea = item.querySelector('.batch-text-input');
+                    textarea.placeholder = `Text ${index + 1} - Enter text for classification`;
+                    textarea.setAttribute('aria-label', `Batch text ${index + 1}`);
+                });
+            }
+
+            getBatchTexts() {
+                const textareas = this.batchTextItems.querySelectorAll('.batch-text-input');
+                return Array.from(textareas).map(textarea => textarea.value);
+            }
+
+            async classifyText() {
+                this.setLoading(true);
+                this.hideMessages();
+                this.hideResults();
+
+                const startTime = performance.now();
+
+                try {
+                    // Simulate API call with mock data
+                    await this.simulateApiCall();
+
+                    const endTime = performance.now();
+                    const processingTime = ((endTime - startTime) / 1000).toFixed(2);
+
+                    if (this.mode === 'single') {
+                        const mockResult = this.generateMockSingleResult();
+                        this.displaySingleResults(mockResult, processingTime);
+                    } else {
+                        const texts = this.getBatchTexts().filter(t => t.trim());
+                        const mockResults = this.generateMockBatchResults(texts);
+                        this.displayBatchResults(mockResults, processingTime);
+                    }
+
+                    this.showSuccess('Text classification completed successfully!');
+
+                } catch (error) {
+                    console.error('Classification error:', error);
+                    this.showError(`Classification failed: ${error.message}`);
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            async simulateApiCall() {
+                // Simulate network delay
+                return new Promise(resolve => setTimeout(resolve, 1500));
+            }
+
+            generateMockSingleResult() {
+                const categories = [
+                    { label: 'Technology', confidence: 0.92 },
+                    { label: 'Science', confidence: 0.75 },
+                    { label: 'Business', confidence: 0.43 },
+                    { label: 'Politics', confidence: 0.28 },
+                    { label: 'Entertainment', confidence: 0.15 }
+                ];
+
+                return {
+                    predictions: categories,
+                    f1_score: 0.87,
+                    tokens_processed: Math.ceil(this.textInput.value.length / 4)
+                };
+            }
+
+            generateMockBatchResults(texts) {
+                return texts.map((text, index) => ({
+                    text: text.substring(0, 100) + (text.length > 100 ? '...' : ''),
+                    predictions: [
+                        { label: ['Technology', 'Science', 'Business', 'Politics', 'Entertainment'][index % 5],
+                          confidence: 0.85 + Math.random() * 0.14 },
+                        { label: ['Science', 'Business', 'Politics', 'Entertainment', 'Technology'][index % 5],
+                          confidence: 0.60 + Math.random() * 0.20 }
+                    ],
+                    f1_score: 0.82 + Math.random() * 0.15
+                }));
+            }
+
+            displaySingleResults(result, processingTime) {
+                // Update metrics
+                this.f1Score.textContent = result.f1_score.toFixed(3);
+                this.topConfidence.textContent = (result.predictions[0].confidence * 100).toFixed(1) + '%';
+                this.processingTime.textContent = processingTime + 's';
+
+                // Show metrics
+                this.metricsSummary.style.display = 'grid';
+                this.batchResults.style.display = 'none';
+
+                // Display predictions
+                this.predictionsList.innerHTML = '';
+                result.predictions.forEach(prediction => {
+                    const item = this.createPredictionItem(prediction);
+                    this.predictionsList.appendChild(item);
+                });
+
+                this.resultsSection.style.display = 'block';
+                this.resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            displayBatchResults(results, processingTime) {
+                // Hide single result displays
+                this.metricsSummary.style.display = 'none';
+                this.predictionsList.innerHTML = '';
+
+                // Display batch results
+                this.batchResults.innerHTML = '';
+                this.batchResults.style.display = 'block';
+
+                results.forEach((result, index) => {
+                    const batchItem = document.createElement('div');
+                    batchItem.className = 'batch-result-item';
+
+                    batchItem.innerHTML = `
+                        <h3>Text ${index + 1} Results</h3>
+                        <div class="batch-result-text">${this.escapeHtml(result.text)}</div>
+                        <div class="metrics-summary" style="margin: 15px 0;">
+                            <div class="metric-card">
+                                <div class="metric-label">F1 Score</div>
+                                <div class="metric-value">${result.f1_score.toFixed(3)}</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-label">Top Category</div>
+                                <div class="metric-value">${result.predictions[0].label}</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-label">Confidence</div>
+                                <div class="metric-value">${(result.predictions[0].confidence * 100).toFixed(1)}%</div>
+                            </div>
+                        </div>
+                    `;
+
+                    // Add predictions
+                    const predictionContainer = document.createElement('div');
+                    result.predictions.forEach(prediction => {
+                        predictionContainer.appendChild(this.createPredictionItem(prediction));
+                    });
+                    batchItem.appendChild(predictionContainer);
+
+                    this.batchResults.appendChild(batchItem);
+                });
+
+                this.resultsSection.style.display = 'block';
+                this.resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            createPredictionItem(prediction) {
+                const item = document.createElement('div');
+                item.className = 'prediction-item';
+
+                const confidencePercent = Math.round(prediction.confidence * 100);
+
+                item.innerHTML = `
+                    <div class="prediction-label">${this.escapeHtml(prediction.label)}</div>
+                    <div style="display: flex; align-items: center;">
+                        <div class="prediction-confidence">${confidencePercent}%</div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: ${confidencePercent}%"></div>
+                        </div>
+                    </div>
+                `;
+
+                return item;
+            }
+
+            setLoading(isLoading) {
+                if (isLoading) {
+                    this.classifyButton.disabled = true;
+                    this.loadingSpinner.style.display = 'inline-block';
+                    this.buttonText.textContent = 'Classifying...';
+                } else {
+                    this.classifyButton.disabled = false;
+                    this.loadingSpinner.style.display = 'none';
+                    this.updateClassifyButton();
+                }
+            }
+
+            showError(message) {
+                this.errorMessage.textContent = message;
+                this.errorMessage.style.display = 'block';
+                this.errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            showSuccess(message) {
+                this.successMessage.textContent = message;
+                this.successMessage.style.display = 'block';
+            }
+
+            hideMessages() {
+                this.errorMessage.style.display = 'none';
+                this.successMessage.style.display = 'none';
+            }
+
+            hideResults() {
+                this.resultsSection.style.display = 'none';
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        }
+
+        // Initialize the application when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new TextClassifier();
+        });
+
+        // Global error handler
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('Unhandled promise rejection:', event.reason);
+            const errorMessage = document.getElementById('errorMessage');
+            if (errorMessage) {
+                errorMessage.textContent = 'An unexpected error occurred. Please try again.';
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
