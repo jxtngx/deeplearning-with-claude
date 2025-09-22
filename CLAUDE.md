@@ -19,9 +19,13 @@ This document serves as a routing guide for Claude Code, directing requests to s
 - **[MetricsArchitect](.claude/agents/metrics.md)**: Domain-specific evaluation metrics
 - **[DomainExpert](.claude/agents/expert.md)**: Task and domain expertise
 
+### Quality Assurance
+- **[TestArchitect](.claude/agents/tests.md)**: Test-driven development specialist
+
 ### Deployment & Infrastructure
-- **[CloudEngineer](.claude/agents/server.md)**: AWS services and API endpoints
-- **[ComputeOrchestrator](.claude/agents/runner.md)**: EC2 resource management
+- **[CloudEngineer](.claude/agents/cloud.md)**: AWS services and API endpoints
+- **[ComputeOrchestrator](.claude/agents/compute.md)**: EC2 resource management
+- **[RunnerOrchestrator](.claude/agents/runner.md)**: Training and evaluation orchestration
 - **[InterfaceDesigner](.claude/agents/frontend.md)**: Web interface development
 
 ### Project Management
@@ -64,34 +68,55 @@ This document serves as a routing guide for Claude Code, directing requests to s
 **Interface Development**
 → **InterfaceDesigner** + **CloudEngineer**
 
+## Test-Driven Development Workflow
+
+### TDD Principles
+This project follows strict Test-Driven Development:
+1. **Tests are written FIRST** by TestArchitect
+2. **Implementation follows tests** to ensure code meets specifications
+3. **All code must pass tests** before acceptance
+4. **Prefer torch.testing** over pytest/unittest for ML components
+
+### TDD Sequential Workflow
+1. **ProjectManager** → Define requirements
+2. **TestArchitect** → Write comprehensive tests
+3. **DomainExpert** → Validate approach
+4. **DatasetCurator** → Select data (with tests)
+5. **ModelArchitect** → Choose base model (passing tests)
+6. **NetworkArchitect** → Customize architecture (TDD)
+7. **TrainingOrchestrator** → Implement training (test-driven)
+8. **CloudEngineer** → Deploy solution (with tests)
+
 ## Collaboration Patterns
 
-### Sequential Workflow
-1. **ProjectManager** → Define requirements
-2. **DomainExpert** → Validate approach
-3. **DatasetCurator** → Select data
-4. **ModelArchitect** → Choose base model
-5. **NetworkArchitect** → Customize architecture
-6. **TrainingOrchestrator** → Implement training
-7. **CloudEngineer** → Deploy solution
+### Test-First Development
+Every code-writing agent MUST:
+1. Request tests from TestArchitect before implementation
+2. Write code that passes the provided tests
+3. Ensure test coverage remains above 90%
+4. Collaborate with TestArchitect for edge cases
 
 ### Parallel Collaboration
-- **Data Team**: DatasetCurator + DataEngineer + TransformSpecialist
-- **Model Team**: ModelArchitect + NetworkArchitect + TrainingOrchestrator
-- **Infrastructure Team**: CloudEngineer + ComputeOrchestrator
+- **Data Team**: TestArchitect + DatasetCurator + DataEngineer + TransformSpecialist
+- **Model Team**: TestArchitect + ModelArchitect + NetworkArchitect + TrainingOrchestrator
+- **Infrastructure Team**: TestArchitect + CloudEngineer + ComputeOrchestrator + RunnerOrchestrator
 - **Interface Team**: InterfaceDesigner + MetricsArchitect
+
+**Note**: TestArchitect writes tests first for each team before implementation begins
 
 ## Quick Reference
 
 | Need | Primary Agent | Supporting Agents |
 |------|--------------|-------------------|
-| Find datasets | DatasetCurator | DomainExpert |
-| Build model | NetworkArchitect | ModelArchitect |
-| Train model | TrainingOrchestrator | DataEngineer |
-| Deploy API | CloudEngineer | ComputeOrchestrator |
+| Write tests | TestArchitect | All code-writing agents |
+| Find datasets | DatasetCurator | TestArchitect, DomainExpert |
+| Build model | NetworkArchitect | TestArchitect, ModelArchitect |
+| Train model | TrainingOrchestrator | TestArchitect, DataEngineer |
+| Run experiments | RunnerOrchestrator | TestArchitect, TrainingOrchestrator |
+| Deploy API | CloudEngineer | TestArchitect, ComputeOrchestrator |
 | Create UI | InterfaceDesigner | CloudEngineer |
-| Optimize performance | ComputeOrchestrator | DataEngineer |
-| Define metrics | MetricsArchitect | DomainExpert |
+| Optimize performance | ComputeOrchestrator | TestArchitect, DataEngineer |
+| Define metrics | MetricsArchitect | TestArchitect, DomainExpert |
 | Manage project | ProjectManager | All agents |
 
 ## Code Structure
@@ -106,7 +131,8 @@ Each `src/` module is owned by specific agents who maintain expertise over that 
 | `src/network.py` | NetworkArchitect, ModelArchitect | Model architectures, HuggingFace integration |
 | `src/trainer.py` | TrainingOrchestrator, MetricsArchitect | Training loops, optimization, metrics |
 | `src/server.py` | CloudEngineer, InterfaceDesigner | API endpoints, model serving, web UI |
-| `src/runner.py` | ComputeOrchestrator | EC2 orchestration, distributed compute |
+| `src/compute.py` | ComputeOrchestrator | EC2 orchestration, distributed compute |
+| `src/runner.py` | RunnerOrchestrator | Training/evaluation pipeline management |
 
 ### Module Interfaces
 
