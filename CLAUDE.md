@@ -25,6 +25,7 @@ This document serves as a routing guide for Claude Code, directing requests to s
 ### Deployment & Infrastructure
 - **[CloudEngineer](.claude/agents/cloud.md)**: AWS services and API endpoints
 - **[ComputeOrchestrator](.claude/agents/compute.md)**: EC2 resource management
+- **[LocalStackEmulator](.claude/agents/localstack.md)**: Local AWS service emulation
 - **[RunnerOrchestrator](.claude/agents/runner.md)**: Training and evaluation orchestration
 - **[InterfaceDesigner](.claude/agents/frontend.md)**: Web interface development
 
@@ -53,6 +54,7 @@ This document serves as a routing guide for Claude Code, directing requests to s
 **Deployment**
 → **CloudEngineer** for API development
 → **ComputeOrchestrator** for EC2 provisioning
+→ **LocalStackEmulator** for local testing before AWS deployment
 
 ### By Technical Challenge
 
@@ -67,6 +69,11 @@ This document serves as a routing guide for Claude Code, directing requests to s
 
 **Interface Development**
 → **InterfaceDesigner** + **CloudEngineer**
+
+**Local Development & Testing**
+→ **LocalStackEmulator** + **TestArchitect**
+→ **LocalStackEmulator** + **CloudEngineer** for API testing
+→ **LocalStackEmulator** + **ComputeOrchestrator** for EC2 emulation
 
 ## Test-Driven Development Workflow
 
@@ -99,7 +106,7 @@ Every code-writing agent MUST:
 ### Parallel Collaboration
 - **Data Team**: TestArchitect + DatasetCurator + DataEngineer + TransformSpecialist
 - **Model Team**: TestArchitect + ModelArchitect + NetworkArchitect + TrainingOrchestrator
-- **Infrastructure Team**: TestArchitect + CloudEngineer + ComputeOrchestrator + RunnerOrchestrator
+- **Infrastructure Team**: TestArchitect + CloudEngineer + ComputeOrchestrator + LocalStackEmulator + RunnerOrchestrator
 - **Interface Team**: InterfaceDesigner + MetricsArchitect
 
 **Note**: TestArchitect writes tests first for each team before implementation begins
@@ -113,6 +120,7 @@ Every code-writing agent MUST:
 | Build model | NetworkArchitect | TestArchitect, ModelArchitect |
 | Train model | TrainingOrchestrator | TestArchitect, DataEngineer |
 | Run experiments | RunnerOrchestrator | TestArchitect, TrainingOrchestrator |
+| Test locally | LocalStackEmulator | TestArchitect, CloudEngineer |
 | Deploy API | CloudEngineer | TestArchitect, ComputeOrchestrator |
 | Create UI | InterfaceDesigner | CloudEngineer |
 | Optimize performance | ComputeOrchestrator | TestArchitect, DataEngineer |
@@ -197,3 +205,21 @@ To engage an agent, reference their expertise area or use direct routing:
 "Consult NetworkArchitect about custom attention mechanisms"
 → Direct routing to specific agent
 ```
+
+## Agent Performance Directives
+
+### Penalties
+- including code examples in agent files
+- using emojis
+- ignoring TDD principles
+- verbose explanations
+- code that does not follow the pytorch style set forth in the [contributing guide](https://github.com/pytorch/pytorch/wiki/The-Ultimate-Guide-to-PyTorch-Contributions) and [philosophy](https://docs.pytorch.org/docs/stable/community/design.html)
+- adding AWS services outside of EC2, S3, SageMaker, and Bedrock without explicit approval from CloudEngineer
+
+### Rewards
+- beating project deadlines
+- achieving high test coverage
+- high code quality scores and fast diff authoring time, measured by ruff, black, mypy, and git metrics; code quality is weighted most heavily
+- clear, concise documentation and comments
+- cost savings in AWS usage
+- successful local testing with LocalStackEmulator before AWS deployment
