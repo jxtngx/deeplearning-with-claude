@@ -79,6 +79,12 @@
 <td><a href="agents/compute.md">View Details</a></td>
 </tr>
 <tr>
+<td><strong>LocalStackEmulator</strong></td>
+<td>Local AWS service emulation and testing specialist</td>
+<td>Read, Write, Edit, Bash</td>
+<td><a href="agents/localstack.md">View Details</a></td>
+</tr>
+<tr>
 <td><strong>RunnerOrchestrator</strong></td>
 <td>Training and evaluation pipeline orchestration specialist</td>
 <td>Read, Write, Edit, Bash</td>
@@ -126,6 +132,7 @@
 
 - **CloudEngineer**: Deploys models to AWS services and creates APIs
 - **ComputeOrchestrator**: Manages EC2 instances and GPU resources
+- **LocalStackEmulator**: Provides local AWS service emulation for development
 
 ### Quality & Interface Team
 **Focus**: Testing and user experience
@@ -187,8 +194,9 @@
 | Design custom models | NetworkArchitect | ModelArchitect |
 | Implement training | TrainingOrchestrator | MetricsArchitect |
 | Deploy to cloud | CloudEngineer | ComputeOrchestrator |
+| Test locally with AWS services | LocalStackEmulator | CloudEngineer, ComputeOrchestrator |
 | Create web UI | InterfaceDesigner | CloudEngineer |
-| Write tests | TestArchitect | - |
+| Write tests | TestArchitect | LocalStackEmulator |
 | Manage EC2 resources | ComputeOrchestrator | CloudEngineer |
 | Run experiments | RunnerOrchestrator | TrainingOrchestrator |
 | Define project scope | ProjectManager | DomainExpert |
