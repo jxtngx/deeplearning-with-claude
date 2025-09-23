@@ -1,5 +1,8 @@
 # Claude Code PyTorch
 
+[![Author](https://img.shields.io/badge/author-jxtngx-blue)](https://github.com/jxtngx)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 A modular, multi-agent based system for PyTorch, Hugging Face, and AWS, powered by Anthropic's Claude family of models.
 
 > **Note**: This project is compatible with GitHub Copilot through `.github/copilot-instructions.md`, which references the same agent architecture defined in `CLAUDE.md`.
@@ -230,3 +233,23 @@ The `src/` directory contains standalone modules that can be run directly withou
 - **Type hints**: Full typing support throughout
 
 This template provides the foundation for any ML project, from research prototypes to production systems.
+
+## Citation
+
+If you use this project in your research or work, please cite:
+
+```bibtex
+@software{claude_code_pytorch,
+  author = {jxtngx},
+  title = {Claude Code PyTorch: Multi-Agent ML Development Framework},
+  year = {2024},
+  url = {https://github.com/jxtngx/claude-code-pytorch},
+  license = {Apache-2.0}
+}
+```
+
+## License
+
+Copyright 2024 jxtngx
+
+Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.

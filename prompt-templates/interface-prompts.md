@@ -1,3 +1,5 @@
+<!-- Copyright 2024 jxtngx | Apache 2.0 License | https://github.com/jxtngx/claude-code-pytorch -->
+
 # Interface Design Task Prompts
 
 ## ML Model Playground Interface

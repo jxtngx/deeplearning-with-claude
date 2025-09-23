@@ -1,3 +1,5 @@
+<!-- Copyright 2024 jxtngx | Apache 2.0 License | https://github.com/jxtngx/claude-code-pytorch -->
+
 # Test-Driven Development Prompts
 
 ## Data Pipeline Test Suite
