@@ -78,6 +78,122 @@ uv pip install -e ".[dev]"
 pre-commit install
 ```
 
+## Using Claude Code Agents
+
+> View all available agents and their capabilities in [.claude/team.md](.claude/team.md)
+
+### Basic Agent Invocation
+
+In the Claude Code terminal, you can directly invoke specialized agents using `@agent-[NAME]` or let Claude automatically route your request to the appropriate expert.
+
+#### Direct Agent Routing
+```bash
+# Explicitly call a specific agent using @agent-[NAME]
+$ "@agent-NetworkArchitect implement a custom attention mechanism for video understanding"
+
+# Agent responds with expertise
+NetworkArchitect: I'll design a custom spatio-temporal attention module...
+```
+
+#### Automatic Routing
+```bash
+# Describe your task and Claude routes to appropriate agents
+$ "I need to fine-tune a BERT model on my custom dataset with limited GPU memory"
+
+# Claude automatically engages relevant agents
+ProjectManager: Let me establish your constraints...
+TestArchitect: Writing tests for your fine-tuning pipeline...
+ModelArchitect: Selecting optimal BERT variant for your memory constraints...
+DataEngineer: Configuring efficient data loading...
+```
+
+### Common Workflows
+
+#### Starting a New Project
+```bash
+$ "I want to build an image classification system for medical X-rays"
+
+# ProjectManager coordinates the team
+ProjectManager: Analyzing requirements...
+DomainExpert: Medical imaging requires specific preprocessing...
+DatasetCurator: Searching for relevant medical datasets...
+TestArchitect: Writing comprehensive test suite first...
+NetworkArchitect: Designing architecture for medical images...
+```
+
+#### Fine-tuning with Limited Resources
+```bash
+$ "Fine-tune Llama-2-7B on my customer support dataset using QLoRA"
+
+# Specialized agents collaborate
+ModelArchitect: Configuring Llama-2-7B with 4-bit quantization...
+DataEngineer: Setting up efficient data pipeline...
+TrainingOrchestrator: Implementing QLoRA with gradient checkpointing...
+MetricsArchitect: Establishing evaluation metrics...
+```
+
+#### Local Testing Before Deployment
+```bash
+$ "Test my model API locally before deploying to AWS"
+
+# LocalStackEmulator coordinates with CloudEngineer
+LocalStackEmulator: Starting local AWS environment...
+CloudEngineer: Configuring API endpoints for local testing...
+TestArchitect: Running integration tests against LocalStack...
+```
+
+#### Creating Test-Driven ML Code
+```bash
+$ "Write tests for a vision transformer training pipeline"
+
+# TestArchitect leads TDD workflow
+TestArchitect: Creating tests that will fail initially...
+  - test_model_initialization()
+  - test_forward_pass_shapes()
+  - test_loss_computation()
+  - test_optimizer_step()
+NetworkArchitect: Implementing ViT to pass your tests...
+```
+
+### Multi-Agent Collaboration Example
+
+```bash
+$ "Deploy a real-time object detection API with <50ms latency"
+
+# Watch agents collaborate
+ProjectManager: Establishing latency requirements...
+TestArchitect: Writing performance benchmarks...
+ModelArchitect: Selecting YOLOv8n for speed...
+ComputeOrchestrator: Recommending g5.xlarge instance...
+CloudEngineer: Implementing FastAPI with async inference...
+LocalStackEmulator: Testing locally first...
+InterfaceDesigner: Creating monitoring dashboard...
+
+# Result: Complete deployment pipeline with tests
+```
+
+### Tips for Effective Agent Use
+
+1. **Be Specific**: Include constraints, metrics, and requirements
+2. **Direct Invocation**: Use `@agent-[NAME]` to call specific agents
+3. **Use Templates**: Copy prompts from `prompt-templates/` for consistency
+4. **Test First**: Let TestArchitect write tests before implementation
+5. **Local First**: Use LocalStackEmulator before AWS deployment
+6. **Trust Routing**: Claude knows which agents to engage when not specified
+
+### Agent Coordination Patterns
+
+```bash
+# Sequential workflow
+$ "Test → Data → Model → Training → Deploy"
+
+# Parallel execution
+$ "Run tests AND start LocalStack AND prepare dataset"
+
+# Specific expertise request
+$ "@agent-MetricsArchitect design custom metrics for video quality assessment"
+```
+
 ## Design Principles
 
 ### Non-Package Architecture
