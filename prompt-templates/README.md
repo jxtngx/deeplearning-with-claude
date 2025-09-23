@@ -16,50 +16,60 @@ This directory contains ready-to-use prompt templates for common machine learnin
 
 ## Template Categories
 
-### vision-prompts.md
-Computer vision tasks including:
-- **Image Classification**: Transfer learning with Vision Transformers or ResNet
-- **Object Detection**: YOLO, Faster R-CNN, DETR implementations
-- **Semantic Segmentation**: DeepLab, U-Net architectures
-
-### nlp-prompts.md
-Natural language processing tasks including:
-- **Text Classification**: BERT/RoBERTa fine-tuning
-- **Named Entity Recognition**: Token classification with transformers
-- **Question Answering**: Extractive QA systems
-
-### multimodal-prompts.md
-Cross-modal understanding tasks including:
-- **Vision-Language Models**: CLIP, ALIGN, BLIP implementations
-- **Audio-Visual Learning**: Multi-modal fusion architectures
-- **Video Understanding**: Temporal modeling with transformers
-
-### pretraining-prompts.md
-Pre-training from scratch including:
-- **Language Model Pre-training**: PyTorch native transformer training
-- **Vision Model Pre-training**: Self-supervised learning (SimCLR, MAE)
-- **Foundation Model Pre-training**: HuggingFace + PyTorch large-scale training
-
-### finetuning-prompts.md
-Model adaptation strategies including:
-- **Full Fine-tuning**: PyTorch native parameter updates
-- **Parameter-Efficient Fine-tuning**: LoRA, QLoRA with HuggingFace PEFT
-- **Domain Adaptation**: Specialized domain transfer learning
-- **Instruction Tuning**: SFT, RLHF, DPO for conversational models
-
-### interface-prompts.md
-Web interface development including:
-- **ML Model Playground**: Interactive parameter tuning interfaces
-- **Data Visualization Dashboard**: Real-time metrics and charts
-- **Model Comparison Tool**: Side-by-side evaluation interfaces
-- **Training Monitor**: Live training progress visualization
-
-### test-prompts.md
-Test-driven development templates including:
-- **Data Pipeline Tests**: DataLoader and transform validation
-- **Model Architecture Tests**: Layer functionality verification
-- **Training Loop Tests**: Optimizer and loss computation checks
-- **API Endpoint Tests**: Request/response validation
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Templates</th>
+<th>Description</th>
+<th>Key Features</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="vision-prompts/">Vision Prompts</a></td>
+<td>3</td>
+<td>Computer vision tasks</td>
+<td>Image Classification, Object Detection, Semantic Segmentation</td>
+</tr>
+<tr>
+<td><a href="nlp-prompts/">NLP Prompts</a></td>
+<td>4</td>
+<td>Natural language processing</td>
+<td>Text Classification, NER, Text Generation, Question Answering</td>
+</tr>
+<tr>
+<td><a href="multimodal-prompts/">Multimodal Prompts</a></td>
+<td>5</td>
+<td>Cross-modal understanding</td>
+<td>Vision-Language, Image Captioning, VQA, AV-ASR, Document AI</td>
+</tr>
+<tr>
+<td><a href="pretraining-prompts/">Pre-training Prompts</a></td>
+<td>3</td>
+<td>Pre-training from scratch</td>
+<td>Language Models, Vision Models, Foundation Models</td>
+</tr>
+<tr>
+<td><a href="finetuning-prompts/">Fine-tuning Prompts</a></td>
+<td>4</td>
+<td>Model adaptation strategies</td>
+<td>Full Fine-tuning, PEFT, Domain Adaptation, Instruction Tuning</td>
+</tr>
+<tr>
+<td><a href="interface-prompts/">Interface Prompts</a></td>
+<td>9</td>
+<td>Web interface development</td>
+<td>ML Playground, Dashboards, Monitoring, Annotation Studio</td>
+</tr>
+<tr>
+<td><a href="test-prompts/">Test Prompts</a></td>
+<td>7</td>
+<td>Test-driven development</td>
+<td>Data Pipeline, Architecture, Training, API, Performance Tests</td>
+</tr>
+</tbody>
+</table>
 
 ## Template Structure
 
