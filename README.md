@@ -1,6 +1,6 @@
 # Claude Code PyTorch
 
-A modular, multi-agent based system for PyTorch, Hugging Face, and AWS.
+A modular, multi-agent based system for PyTorch, Hugging Face, and AWS, powered by Anthropic's Claude family of models.
 
 ## Philosophy
 
@@ -22,6 +22,28 @@ Built for AWS EC2 environments with scalable infrastructure patterns.
 
 ### Collaborative Intelligence
 Agents work in concert, sharing context and building on each other's outputs.
+
+## Structured Requirements Format
+
+This project uses a disciplined approach to requirements specification:
+
+### INVEST User Stories
+All agent tasks and prompt templates follow the agile INVEST criteria:
+- **Independent**: Each story stands alone
+- **Negotiable**: Flexible implementation details
+- **Valuable**: Clear business or research value
+- **Estimable**: Measurable scope and effort
+- **Small**: Completable in reasonable time
+- **Testable**: Verifiable success criteria
+
+### CRPG Optimization Framework
+A custom format guides AI agent optimization:
+- **Constraints**: Technical boundaries and limitations
+- **Rewards**: Success metrics and performance targets
+- **Penalties**: Anti-patterns and quality deductions
+- **Goal State**: Clear deliverables and validation criteria
+
+This structured approach ensures agents understand both the "what" (user story) and the "how" (optimization parameters) of each task.
 
 ## Getting Started
 

@@ -61,10 +61,22 @@ Test-driven development templates including:
 
 ## Template Structure
 
-Each template follows a consistent structure:
+Each template follows a consistent structure combining agile methodologies with AI optimization:
+
+### INVEST User Stories
+Templates begin with user stories following the agile INVEST principles:
+- **Independent**: Self-contained requirements
+- **Negotiable**: Flexible implementation approach
+- **Valuable**: Clear benefit to stakeholder
+- **Estimable**: Defined scope and complexity
+- **Small**: Achievable in reasonable timeframe
+- **Testable**: Measurable success criteria
+
+### CRPG Optimization Framework
+Following the user story, each template includes a custom CRPG framework that guides AI agent behavior:
 
 ```markdown
-**User Story:**
+**User Story:** (INVEST format)
 As a [role]
 I want to [goal]
 So that [benefit]
@@ -92,6 +104,8 @@ So that [benefit]
 - Success criteria
 - Validation methods
 ```
+
+This dual format ensures agents receive both high-level intent (INVEST) and specific optimization parameters (CRPG) for optimal task execution.
 
 ## Customization Guide
 
