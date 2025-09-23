@@ -78,36 +78,6 @@ uv pip install -e ".[dev]"
 pre-commit install
 ```
 
-### Basic Usage
-
-```bash
-# Train a model
-python src/runner.py train --dataset cifar10 --epochs 10
-
-# Serve trained model
-python src/runner.py serve --model-path checkpoints/best.pt
-
-# Evaluate model
-python src/runner.py evaluate --model-path checkpoints/best.pt --dataset cifar10
-```
-
-### Development
-
-```bash
-# Format code
-black src/
-ruff format src/
-
-# Lint code
-ruff check src/
-
-# Type check
-mypy src/
-
-# Run pre-commit on all files
-pre-commit run --all-files
-```
-
 ## Design Principles
 
 ### Non-Package Architecture
