@@ -26,6 +26,29 @@
             color: var(--foreground);
             padding: 30px;
             text-align: center;
+            position: relative;
+        }
+
+        .home-link {
+            position: absolute;
+            top: var(--space-4);
+            left: var(--space-4);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-4);
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--foreground);
+            text-decoration: none;
+            border-radius: var(--radius-lg);
+            font-weight: var(--font-medium);
+            font-size: var(--text-sm);
+            transition: all var(--transition-base) var(--ease-in-out);
+        }
+
+        .home-link:hover {
+            background: rgba(0, 0, 0, 0.5);
+            transform: translateX(-2px);
         }
 
         .header h1 {
@@ -444,6 +467,13 @@
 <body>
     <div class="container">
         <header class="header">
+            <a href="../index.html" class="home-link" aria-label="Back to home">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5"></path>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Home
+            </a>
             <h1>Text Classification</h1>
             <p>Classify text documents using transformer-based deep learning models</p>
         </header>
