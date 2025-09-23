@@ -27,7 +27,7 @@ Designed and documented 15 specialized agents:
 ## License
 
 This project is licensed under the Apache License, Version 2.0.
-Copyright 2024 jxtngx
+Copyright 2025 jxtngx
 
 ## Contact
 

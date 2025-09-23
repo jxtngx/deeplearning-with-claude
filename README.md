@@ -242,7 +242,7 @@ If you use this project in your research or work, please cite:
 @software{claude_code_pytorch,
   author = {jxtngx},
   title = {Claude Code PyTorch: Multi-Agent ML Development Framework},
-  year = {2024},
+  year = {2025},
   url = {https://github.com/jxtngx/claude-code-pytorch},
   license = {Apache-2.0}
 }
@@ -250,6 +250,6 @@ If you use this project in your research or work, please cite:
 
 ## License
 
-Copyright 2024 jxtngx
+Copyright 2025 jxtngx
 
 Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.

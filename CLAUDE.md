@@ -1,5 +1,5 @@
 <!--
-Copyright 2024 jxtngx
+Copyright 2025 jxtngx
 Licensed under Apache 2.0
 Original: https://github.com/jxtngx/claude-code-pytorch
 -->
