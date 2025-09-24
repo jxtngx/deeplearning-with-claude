@@ -22,7 +22,7 @@ Designed and documented 15 specialized agents:
 - TrainingOrchestrator, MetricsArchitect, RunnerOrchestrator (Training & Evaluation)
 - CloudEngineer, ComputeOrchestrator, LocalStackEmulator (Infrastructure)
 - TestArchitect, InterfaceDesigner (Quality & Interface)
-- ProjectManager, DomainExpert (Strategy)
+- Supervisor, DomainExpert (Strategy)
 
 ## License
 

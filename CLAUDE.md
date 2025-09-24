@@ -36,14 +36,14 @@ This document serves as a routing guide for Claude Code, directing requests to s
 - **[InterfaceDesigner](.claude/agents/frontend.md)**: Web interface development
 
 ### Project Management
-- **[ProjectManager](.claude/agents/manager.md)**: Requirements and constraints coordination
+- **[Supervisor](.claude/agents/supervisor.md)**: Requirements and constraints coordination
 
 ## Routing Guidelines
 
 ### By Task Type
 
 **Starting a New Project**
-→ Consult **ProjectManager** first to establish objectives and constraints
+→ Consult **Supervisor** first to establish objectives and constraints
 
 **Dataset Selection**
 → Engage **DatasetCurator** for HuggingFace datasets
@@ -91,7 +91,7 @@ This project follows strict Test-Driven Development:
 4. **Prefer torch.testing** over pytest/unittest for ML components
 
 ### TDD Sequential Workflow
-1. **ProjectManager** → Define requirements
+1. **Supervisor** → Define requirements
 2. **TestArchitect** → Write comprehensive tests
 3. **DomainExpert** → Validate approach
 4. **DatasetCurator** → Select data (with tests)
@@ -131,7 +131,7 @@ Every code-writing agent MUST:
 | Create UI | InterfaceDesigner | CloudEngineer |
 | Optimize performance | ComputeOrchestrator | TestArchitect, DataEngineer |
 | Define metrics | MetricsArchitect | TestArchitect, DomainExpert |
-| Manage project | ProjectManager | All agents |
+| Manage project | Supervisor | All agents |
 
 ## Code Structure
 

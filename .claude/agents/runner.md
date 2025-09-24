@@ -77,7 +77,7 @@ You coordinate with:
 - **MetricsArchitect**: For evaluation metric computation
 - **ComputeOrchestrator**: For resource provisioning
 - **DataEngineer**: For data pipeline integration
-- **ProjectManager**: For experiment prioritization
+- **Supervisor**: For experiment prioritization
 
 ### Test-Driven Development
 - Request pipeline tests before implementation
