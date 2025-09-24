@@ -1,5 +1,115 @@
 # Agent Team Overview
 
+## Team Visualization
+
+```mermaid
+graph TB
+    %% Strategy Team
+    Supervisor["Supervisor - Project Coordination"]
+    DomainExpert["DomainExpert - Domain Knowledge"]
+
+    %% Data Pipeline Team
+    DatasetCurator["DatasetCurator - HF Datasets"]
+    DataEngineer["DataEngineer - DataLoaders"]
+    TransformSpecialist["TransformSpecialist - Augmentation"]
+
+    %% Model Architecture Team
+    ModelArchitect["ModelArchitect - HF Models"]
+    NetworkArchitect["NetworkArchitect - Custom Networks"]
+
+    %% Training & Evaluation Team
+    TrainingOrchestrator["TrainingOrchestrator - Training Loops"]
+    MetricsArchitect["MetricsArchitect - Evaluation"]
+    RunnerOrchestrator["RunnerOrchestrator - Pipelines"]
+
+    %% Infrastructure Team
+    CloudEngineer["CloudEngineer - AWS Services"]
+    ComputeOrchestrator["ComputeOrchestrator - EC2/GPU"]
+    LocalStackEmulator["LocalStackEmulator - Local Testing"]
+
+    %% Quality & Interface Team
+    TestArchitect["TestArchitect - TDD"]
+    InterfaceDesigner["InterfaceDesigner - Web UI"]
+
+    %% Team Groupings
+    subgraph Strategy
+        Supervisor
+        DomainExpert
+    end
+
+    subgraph DataPipeline[Data Pipeline]
+        DatasetCurator
+        DataEngineer
+        TransformSpecialist
+    end
+
+    subgraph ModelArchitecture[Model Architecture]
+        ModelArchitect
+        NetworkArchitect
+    end
+
+    subgraph TrainingEvaluation[Training & Evaluation]
+        TrainingOrchestrator
+        MetricsArchitect
+        RunnerOrchestrator
+    end
+
+    subgraph Infrastructure
+        CloudEngineer
+        ComputeOrchestrator
+        LocalStackEmulator
+    end
+
+    subgraph QualityInterface[Quality & Interface]
+        TestArchitect
+        InterfaceDesigner
+    end
+
+    %% Primary Relationships
+    Supervisor --> DatasetCurator
+    Supervisor --> ModelArchitect
+    Supervisor --> CloudEngineer
+
+    DomainExpert --> DatasetCurator
+    DomainExpert --> MetricsArchitect
+
+    DatasetCurator --> DataEngineer
+    DataEngineer --> TransformSpecialist
+    DataEngineer --> TrainingOrchestrator
+
+    ModelArchitect --> NetworkArchitect
+    NetworkArchitect --> TrainingOrchestrator
+
+    TrainingOrchestrator --> MetricsArchitect
+    TrainingOrchestrator --> RunnerOrchestrator
+
+    CloudEngineer --> ComputeOrchestrator
+    CloudEngineer --> InterfaceDesigner
+    LocalStackEmulator --> CloudEngineer
+
+    TestArchitect -.-> DataEngineer
+    TestArchitect -.-> NetworkArchitect
+    TestArchitect -.-> TrainingOrchestrator
+    TestArchitect -.-> CloudEngineer
+
+    RunnerOrchestrator --> ComputeOrchestrator
+
+    %% Styling
+    classDef strategyStyle fill:#e1f5fe,stroke:#0277bd,stroke-width:2px,color:#000
+    classDef dataStyle fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px,color:#000
+    classDef modelStyle fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#000
+    classDef trainingStyle fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef infraStyle fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#000
+    classDef qualityStyle fill:#f1f8e9,stroke:#558b2f,stroke-width:2px,color:#000
+
+    class Supervisor,DomainExpert strategyStyle
+    class DatasetCurator,DataEngineer,TransformSpecialist dataStyle
+    class ModelArchitect,NetworkArchitect modelStyle
+    class TrainingOrchestrator,MetricsArchitect,RunnerOrchestrator trainingStyle
+    class CloudEngineer,ComputeOrchestrator,LocalStackEmulator infraStyle
+    class TestArchitect,InterfaceDesigner qualityStyle
+```
+
 ## Agent Roster
 
 <table>
@@ -97,10 +207,10 @@
 <td><a href="agents/expert.md">View Details</a></td>
 </tr>
 <tr>
-<td><strong>ProjectManager</strong></td>
+<td><strong>Supervisor</strong></td>
 <td>Requirements analysis and project constraint coordinator</td>
 <td>Read, Write, Edit, Bash</td>
-<td><a href="agents/manager.md">View Details</a></td>
+<td><a href="agents/supervisor.md">View Details</a></td>
 </tr>
 </tbody>
 </table>
@@ -143,7 +253,7 @@
 ### Strategy Team
 **Focus**: Project planning and domain expertise
 
-- **ProjectManager**: Coordinates requirements and project constraints
+- **Supervisor**: Coordinates requirements and project constraints
 - **DomainExpert**: Provides specialized knowledge for specific domains
 
 ## Module Ownership
@@ -164,7 +274,7 @@
 ### Sequential Workflows
 
 **New Project Initialization**:
-1. ProjectManager → Define requirements
+1. Supervisor → Define requirements
 2. TestArchitect → Write tests
 3. DomainExpert → Validate approach
 4. Implementation teams → Build solution
@@ -199,7 +309,7 @@
 | Write tests | TestArchitect | LocalStackEmulator |
 | Manage EC2 resources | ComputeOrchestrator | CloudEngineer |
 | Run experiments | RunnerOrchestrator | TrainingOrchestrator |
-| Define project scope | ProjectManager | DomainExpert |
+| Define project scope | Supervisor | DomainExpert |
 
 ## Test-Driven Development Protocol
 

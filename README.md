@@ -52,11 +52,123 @@ This structured approach ensures agents understand both the "what" (user story) 
 
 ## Getting Started
 
-1. **Define Your Project**: Consult `CLAUDE.md` to engage the ProjectManager
+1. **Define Your Project**: Consult `CLAUDE.md` to engage the Supervisor
 2. **Select Your Team**: Claude routes to appropriate specialist agents
 3. **Iterate and Build**: Agents collaborate to implement your solution
 
 ## Architecture
+
+### Agent Team Structure
+
+```mermaid
+graph TB
+    %% Strategy Team
+    Supervisor["Supervisor - Project Coordination"]
+    DomainExpert["DomainExpert - Domain Knowledge"]
+
+    %% Data Pipeline Team
+    DatasetCurator["DatasetCurator - HF Datasets"]
+    DataEngineer["DataEngineer - DataLoaders"]
+    TransformSpecialist["TransformSpecialist - Augmentation"]
+
+    %% Model Architecture Team
+    ModelArchitect["ModelArchitect - HF Models"]
+    NetworkArchitect["NetworkArchitect - Custom Networks"]
+
+    %% Training & Evaluation Team
+    TrainingOrchestrator["TrainingOrchestrator - Training Loops"]
+    MetricsArchitect["MetricsArchitect - Evaluation"]
+    RunnerOrchestrator["RunnerOrchestrator - Pipelines"]
+
+    %% Infrastructure Team
+    CloudEngineer["CloudEngineer - AWS Services"]
+    ComputeOrchestrator["ComputeOrchestrator - EC2/GPU"]
+    LocalStackEmulator["LocalStackEmulator - Local Testing"]
+
+    %% Quality & Interface Team
+    TestArchitect["TestArchitect - TDD"]
+    InterfaceDesigner["InterfaceDesigner - Web UI"]
+
+    %% Team Groupings
+    subgraph Strategy
+        Supervisor
+        DomainExpert
+    end
+
+    subgraph DataPipeline[Data Pipeline]
+        DatasetCurator
+        DataEngineer
+        TransformSpecialist
+    end
+
+    subgraph ModelArchitecture[Model Architecture]
+        ModelArchitect
+        NetworkArchitect
+    end
+
+    subgraph TrainingEvaluation[Training & Evaluation]
+        TrainingOrchestrator
+        MetricsArchitect
+        RunnerOrchestrator
+    end
+
+    subgraph Infrastructure
+        CloudEngineer
+        ComputeOrchestrator
+        LocalStackEmulator
+    end
+
+    subgraph QualityInterface[Quality & Interface]
+        TestArchitect
+        InterfaceDesigner
+    end
+
+    %% Primary Relationships
+    Supervisor --> DatasetCurator
+    Supervisor --> ModelArchitect
+    Supervisor --> CloudEngineer
+
+    DomainExpert --> DatasetCurator
+    DomainExpert --> MetricsArchitect
+
+    DatasetCurator --> DataEngineer
+    DataEngineer --> TransformSpecialist
+    DataEngineer --> TrainingOrchestrator
+
+    ModelArchitect --> NetworkArchitect
+    NetworkArchitect --> TrainingOrchestrator
+
+    TrainingOrchestrator --> MetricsArchitect
+    TrainingOrchestrator --> RunnerOrchestrator
+
+    CloudEngineer --> ComputeOrchestrator
+    CloudEngineer --> InterfaceDesigner
+    LocalStackEmulator --> CloudEngineer
+
+    TestArchitect -.-> DataEngineer
+    TestArchitect -.-> NetworkArchitect
+    TestArchitect -.-> TrainingOrchestrator
+    TestArchitect -.-> CloudEngineer
+
+    RunnerOrchestrator --> ComputeOrchestrator
+
+    %% Styling
+    classDef strategyStyle fill:#e1f5fe,stroke:#0277bd,stroke-width:2px,color:#000
+    classDef dataStyle fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px,color:#000
+    classDef modelStyle fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#000
+    classDef trainingStyle fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef infraStyle fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#000
+    classDef qualityStyle fill:#f1f8e9,stroke:#558b2f,stroke-width:2px,color:#000
+
+    class Supervisor,DomainExpert strategyStyle
+    class DatasetCurator,DataEngineer,TransformSpecialist dataStyle
+    class ModelArchitect,NetworkArchitect modelStyle
+    class TrainingOrchestrator,MetricsArchitect,RunnerOrchestrator trainingStyle
+    class CloudEngineer,ComputeOrchestrator,LocalStackEmulator infraStyle
+    class TestArchitect,InterfaceDesigner qualityStyle
+```
+
+### Workflow
 
 ```
 Agents → Specialized Expertise → Collaborative Implementation → Deployed Solution
@@ -128,7 +240,7 @@ NetworkArchitect: I'll design a custom spatio-temporal attention module...
 $ "I need to fine-tune a BERT model on my custom dataset with limited GPU memory"
 
 # Claude automatically engages relevant agents
-ProjectManager: Let me establish your constraints...
+Supervisor: Let me establish your constraints...
 TestArchitect: Writing tests for your fine-tuning pipeline...
 ModelArchitect: Selecting optimal BERT variant for your memory constraints...
 DataEngineer: Configuring efficient data loading...
@@ -140,8 +252,8 @@ DataEngineer: Configuring efficient data loading...
 ```bash
 $ "I want to build an image classification system for medical X-rays"
 
-# ProjectManager coordinates the team
-ProjectManager: Analyzing requirements...
+# Supervisor coordinates the team
+Supervisor: Analyzing requirements...
 DomainExpert: Medical imaging requires specific preprocessing...
 DatasetCurator: Searching for relevant medical datasets...
 TestArchitect: Writing comprehensive test suite first...
@@ -188,7 +300,7 @@ NetworkArchitect: Implementing ViT to pass your tests...
 $ "Deploy a real-time object detection API with <50ms latency"
 
 # Watch agents collaborate
-ProjectManager: Establishing latency requirements...
+Supervisor: Establishing latency requirements...
 TestArchitect: Writing performance benchmarks...
 ModelArchitect: Selecting YOLOv8n for speed...
 ComputeOrchestrator: Recommending g5.xlarge instance...
