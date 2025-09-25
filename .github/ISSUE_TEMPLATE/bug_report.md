@@ -1,38 +1,53 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Report a defect using INVEST user story format
 title: ''
-labels: ''
+labels: 'bug'
 assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+<!-- Copyright 2025 jxtngx | Apache 2.0 License | https://github.com/jxtngx/claude-code-pytorch -->
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+## User Story (INVEST Format)
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**As a** [role: researcher/developer/user]
+**I want to** [fix the specific defect]
+**So that** [benefit/value delivered]
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Examples:**
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+1. As a model developer
+   I want to fix the DataLoader memory leak during multi-GPU training
+   So that I can train models without OOM errors on long-running jobs
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+2. As a cloud engineer
+   I want to fix the model checkpoint corruption when saving to S3
+   So that I can reliably resume training from any checkpoint
 
-**Additional context**
-Add any other context about the problem here.
+3. As a training engineer
+   I want to fix gradient accumulation producing incorrect gradient values
+   So that I can train large models with small batch sizes accurately
+
+4. As a network architect
+   I want to fix the custom attention layer causing NaN loss values
+   So that I can train transformer models to convergence
+
+5. As a developer using LocalStack
+   I want to fix the LocalStackEmulator failing to mock SageMaker endpoints
+   So that I can test deployment workflows locally before using AWS
+
+---
+
+### Additional Context
+
+**Error Messages/Stack Traces:**
+```
+[Paste complete error output here]
+```
+
+**Screenshots/Logs:**
+[If applicable, add visual evidence]
+
+**Related Issues:**
+[Link to related issues if any]
