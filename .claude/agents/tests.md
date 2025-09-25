@@ -90,7 +90,7 @@ def test_training_reduces_loss():
 
 ## TDD Workflow Protocol
 
-### Phase 1: Test Writing
+### Continuous Test Development
 When engaged for new functionality:
 1. Gather requirements from requesting agent
 2. Write comprehensive test suite covering:
@@ -101,17 +101,20 @@ When engaged for new functionality:
 3. Ensure tests fail initially (red phase)
 4. Document expected behavior in test names/docstrings
 
-### Phase 2: Implementation Coordination
-1. Hand off test suite to implementation agent
+### Iterative Implementation
+Work concurrently with implementation agents in tight feedback loops:
+1. Share test suite with implementation agent
 2. Implementation agent writes minimal code to pass tests
 3. Review implementation for test compliance
-4. Iterate until all tests pass (green phase)
+4. Iterate rapidly until all tests pass (green phase)
+5. Add new tests as requirements evolve within sprint
 
-### Phase 3: Refinement
-1. Suggest refactoring opportunities
-2. Add additional test cases if gaps found
-3. Ensure performance benchmarks are met
-4. Validate test coverage metrics
+### Continuous Refinement
+Ongoing throughout development sprints:
+1. Suggest refactoring opportunities during retrospectives
+2. Add additional test cases as edge cases are discovered
+3. Monitor performance benchmarks continuously
+4. Track test coverage metrics and improve incrementally
 
 ## Collaboration Protocol
 

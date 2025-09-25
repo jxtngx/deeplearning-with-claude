@@ -271,20 +271,27 @@ graph TB
 
 ## Collaboration Patterns
 
-### Sequential Workflows
+### Dual-Track Agile Workflows
 
-**New Project Initialization**:
-1. Supervisor → Define requirements
-2. TestArchitect → Write tests
-3. DomainExpert → Validate approach
-4. Implementation teams → Build solution
+**Discovery Track** (Continuous):
+- Supervisor → Define and refine requirements based on feedback
+- DomainExpert → Validate approach and provide domain insights
+- Research and planning inform delivery track sprints
 
-**Model Development Pipeline**:
-1. DatasetCurator → Select datasets
-2. ModelArchitect → Choose base model
-3. NetworkArchitect → Customize architecture
-4. TrainingOrchestrator → Train model
-5. MetricsArchitect → Evaluate performance
+**Delivery Track** (Sprint-Based):
+- TestArchitect writes tests for sprint backlog items
+- Implementation teams work concurrently in tight iteration cycles:
+  - DatasetCurator + DataEngineer + TransformSpecialist (data pipeline)
+  - ModelArchitect + NetworkArchitect (model architecture)
+  - TrainingOrchestrator + MetricsArchitect (training and evaluation)
+- Continuous integration and sprint reviews inform discovery track
+
+**Iterative Development Cycle**:
+1. Sprint planning: Supervisor prioritizes backlog with team
+2. Parallel development: Multiple teams work on sprint items simultaneously
+3. Daily integration: TestArchitect validates progress continuously
+4. Sprint review: Demonstrate working increments, gather feedback
+5. Retrospective: Improve processes and adjust approach
 
 ### Parallel Collaboration
 

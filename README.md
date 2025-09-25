@@ -323,8 +323,8 @@ InterfaceDesigner: Creating monitoring dashboard...
 ### Agent Coordination Patterns
 
 ```bash
-# Sequential workflow
-$ "Test → Data → Model → Training → Deploy"
+# Iterative workflow
+$ "Test → Data → Model → Training → Deploy (continuous iteration)"
 
 # Parallel execution
 $ "Run tests AND start LocalStack AND prepare dataset"
