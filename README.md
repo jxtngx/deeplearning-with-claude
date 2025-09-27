@@ -52,28 +52,23 @@ These skills transfer directly to building production agent applications, making
 
 This project uses a disciplined approach to requirements specification:
 
-<table>
-<tr>
-<td style="background-color: black; color: #808080; width: 50%; vertical-align: top;">
-  <p style="font-size: 1.17em; font-weight: bold; margin-top: 6px; margin-bottom: 6px; color: white;">INVEST User Stories</p>
-  All agent tasks and prompt templates follow the agile INVEST criteria<br/><br/>
-  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Independent</p> Each story stands alone<br/>
-  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Negotiable</p> Flexible implementation details<br/>
-  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Valuable</p> Clear business or research value<br/>
-  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Estimable</p> Measurable scope and effort<br/>
-  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Small</p> Completable in reasonable time<br/>
-  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Testable</p> Verifiable success criteria
-</td>
-<td style="background-color: black; color: #808080; width: 50%; vertical-align: top;">
-  <p style="font-size: 1.17em; font-weight: bold; margin-top: 6px; margin-bottom: 6px; color: white;">CRPG Optimization Framework</p>
-  A custom format using Reinforcement Learning language guides AI agent optimization<br/><br/>
-  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Constraints</p> Technical boundaries and limitations<br/>
-  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Rewards</p> Success metrics and performance targets<br/>
-  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Penalties</p> Anti-patterns and quality deductions<br/>
-  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Goal State</p> Clear deliverables and validation criteria
-</td>
-</tr>
-</table>
+### INVEST User Stories
+All agent tasks and prompt templates follow the agile INVEST criteria
+
+- **Independent** - Each story stands alone
+- **Negotiable** - Flexible implementation details
+- **Valuable** - Clear business or research value
+- **Estimable** - Measurable scope and effort
+- **Small** - Completable in reasonable time
+- **Testable** - Verifiable success criteria
+
+### CRPG Optimization Framework
+A custom format using Reinforcement Learning language guides AI agent optimization
+
+- **Constraints** - Technical boundaries and limitations
+- **Rewards** - Success metrics and performance targets
+- **Penalties** - Anti-patterns and quality deductions
+- **Goal State** - Clear deliverables and validation criteria
 
 This structured approach ensures agents understand both the "what" (user story) and the "how" (optimization parameters) of each task.
 
