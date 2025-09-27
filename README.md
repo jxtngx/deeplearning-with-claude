@@ -13,40 +13,67 @@ This repository embodies an **agent-based architecture** for machine learning pr
 
 ## Core Principles
 
-### Separation of Concerns
-Each agent owns a specific technical domain, preventing overlap and ensuring expertise depth.
+<table>
+<tr>
+<td style="background-color: black; color: #808080; padding: 15px; width: 50%; vertical-align: top;"><h3 style="margin-top: 0; margin-bottom: 10px; color: white;">Separation of Concerns</h3>Each agent owns a specific technical domain, preventing overlap and ensuring expertise depth.</td>
+<td style="background-color: black; color: #808080; padding: 15px; width: 50%; vertical-align: top;"><h3 style="margin-top: 0; margin-bottom: 10px; color: white;">Modality Agnostic</h3>Agents adapt to any ML task—vision, NLP, audio, multimodal—without hardcoded assumptions.</td>
+</tr>
+<tr>
+<td style="background-color: black; color: #808080; padding: 15px; width: 50%; vertical-align: top;"><h3 style="margin-top: 0; margin-bottom: 10px; color: white;">Performance First</h3>Optimized for PyTorch 2.3+ with distributed training and NVIDIA GPU acceleration.</td>
+<td style="background-color: black; color: #808080; padding: 15px; width: 50%; vertical-align: top;"><h3 style="margin-top: 0; margin-bottom: 10px; color: white;">Cloud Native</h3>Built for AWS EC2 environments with scalable infrastructure patterns.</td>
+</tr>
+<tr>
+<td colspan="2" align="center" style="background-color: black; color: #808080; padding: 15px;"><h3 style="margin-top: 0; margin-bottom: 10px; color: white;">Collaborative Intelligence</h3>Agents work in concert, sharing context and building on each other's outputs.</td>
+</tr>
+</table>
 
-### Modality Agnostic
-Agents adapt to any ML task—vision, NLP, audio, multimodal—without hardcoded assumptions.
+## Skill Progression Platform
 
-### Performance First
-Optimized for PyTorch 2.3+ with distributed training and NVIDIA GPU acceleration.
+This template serves as a gateway to two critical ML engineering competencies:
 
-### Cloud Native
-Built for AWS EC2 environments with scalable infrastructure patterns.
+### PyTorch Mastery
+Progress from basic tensor operations to production-ready ML systems through practical, agent-guided development. The `prompting-guide/` provides a structured path from prompt dependency to independent PyTorch expertise.
 
-### Collaborative Intelligence
-Agents work in concert, sharing context and building on each other's outputs.
+### Agentic Application Development
+The multi-agent architecture here provides hands-on experience with patterns directly applicable to:
+- **LangChain**: Chain-of-thought reasoning, tool use, and agent orchestration
+- **AWS Bedrock Agents**: Structured prompts, knowledge bases, and action groups
+- **NVIDIA NeMo Guardrails**: Agent safety, structured outputs, and conversation flows
+
+By working with this template's agent team, you're learning:
+- Agent coordination patterns (supervisor/worker models)
+- Tool use and function calling (ReAct patterns)
+- Structured prompting (INVEST+CRPG framework)
+- Multi-agent orchestration (parallel and sequential workflows)
+
+These skills transfer directly to building production agent applications, making this template both a PyTorch learning tool and an introduction to the agentic AI ecosystem.
 
 ## Structured Requirements Format
 
 This project uses a disciplined approach to requirements specification:
 
-### INVEST User Stories
-All agent tasks and prompt templates follow the agile INVEST criteria:
-- **Independent**: Each story stands alone
-- **Negotiable**: Flexible implementation details
-- **Valuable**: Clear business or research value
-- **Estimable**: Measurable scope and effort
-- **Small**: Completable in reasonable time
-- **Testable**: Verifiable success criteria
-
-### CRPG Optimization Framework
-A custom format guides AI agent optimization:
-- **Constraints**: Technical boundaries and limitations
-- **Rewards**: Success metrics and performance targets
-- **Penalties**: Anti-patterns and quality deductions
-- **Goal State**: Clear deliverables and validation criteria
+<table>
+<tr>
+<td style="background-color: black; color: #808080; padding: 15px; width: 50%; vertical-align: top;">
+  <h3 style="margin-top: 0; margin-bottom: 10px; color: white;">INVEST User Stories</h3>
+  All agent tasks and prompt templates follow the agile INVEST criteria:<br/><br/>
+  <h4 style="color: white;">Independent</h4> Each story stands alone<br/>
+  <h4 style="color: white;">Negotiable</h4> Flexible implementation details<br/>
+  <h4 style="color: white;">Valuable</h4> Clear business or research value<br/>
+  <h4 style="color: white;">Estimable</h4> Measurable scope and effort<br/>
+  <h4 style="color: white;">Small</h4> Completable in reasonable time<br/>
+  <h4 style="color: white;">Testable</h4> Verifiable success criteria
+</td>
+<td style="background-color: black; color: #808080; padding: 15px; width: 50%; vertical-align: top;">
+  <h3 style="margin-top: 0; margin-bottom: 10px; color: white;">CRPG Optimization Framework</h3>
+  A custom format using Reinforcement Learning language guides AI agent optimization:<br/><br/>
+  <h4 style="color: white;">Constraints</h4> Technical boundaries and limitations<br/>
+  <h4 style="color: white;">Rewards</h4> Success metrics and performance targets<br/>
+  <h4 style="color: white;">Penalties</h4> Anti-patterns and quality deductions<br/>
+  <h4 style="color: white;">Goal State</h4> Clear deliverables and validation criteria
+</td>
+</tr>
+</table>
 
 This structured approach ensures agents understand both the "what" (user story) and the "how" (optimization parameters) of each task.
 
@@ -195,6 +222,7 @@ Each agent operates as an expert consultant, providing:
   - `adr/`: Architecture Decision Records
   - `sprints/`: Sprint planning and tracking
 - `prompt-templates/`: Task-specific prompt examples
+- `prompting-guide/`: Comprehensive guide on prompting techniques and MLE learning path
 - `src/`: Core Python modules (non-package structure)
   - `data.py`: Data pipeline components
   - `network.py`: Model architectures
