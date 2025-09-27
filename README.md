@@ -55,22 +55,22 @@ This project uses a disciplined approach to requirements specification:
 <table>
 <tr>
 <td style="background-color: black; color: #808080; width: 50%; vertical-align: top;">
-  <h3 style="margin-top: 6; margin-bottom: 6px; color: white;">INVEST User Stories</h3>
+  <p style="font-size: 1.17em; font-weight: bold; margin-top: 6px; margin-bottom: 6px; color: white;">INVEST User Stories</p>
   All agent tasks and prompt templates follow the agile INVEST criteria<br/><br/>
-  <h4 style="color: white; margin-bottom: 2px;">Independent</h4> Each story stands alone<br/>
-  <h4 style="color: white; margin-bottom: 2px;">Negotiable</h4> Flexible implementation details<br/>
-  <h4 style="color: white; margin-bottom: 2px;">Valuable</h4> Clear business or research value<br/>
-  <h4 style="color: white; margin-bottom: 2px;">Estimable</h4> Measurable scope and effort<br/>
-  <h4 style="color: white; margin-bottom: 2px;">Small</h4> Completable in reasonable time<br/>
-  <h4 style="color: white; margin-bottom: 2px;">Testable</h4> Verifiable success criteria
+  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Independent</p> Each story stands alone<br/>
+  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Negotiable</p> Flexible implementation details<br/>
+  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Valuable</p> Clear business or research value<br/>
+  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Estimable</p> Measurable scope and effort<br/>
+  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Small</p> Completable in reasonable time<br/>
+  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Testable</p> Verifiable success criteria
 </td>
 <td style="background-color: black; color: #808080; width: 50%; vertical-align: top;">
-  <h3 style="margin-top: 6; margin-bottom: 6px; color: white;">CRPG Optimization Framework</h3>
+  <p style="font-size: 1.17em; font-weight: bold; margin-top: 6px; margin-bottom: 6px; color: white;">CRPG Optimization Framework</p>
   A custom format using Reinforcement Learning language guides AI agent optimization<br/><br/>
-  <h4 style="color: white; margin-bottom: 2px;">Constraints</h4> Technical boundaries and limitations<br/>
-  <h4 style="color: white; margin-bottom: 2px;">Rewards</h4> Success metrics and performance targets<br/>
-  <h4 style="color: white; margin-bottom: 2px;">Penalties</h4> Anti-patterns and quality deductions<br/>
-  <h4 style="color: white; margin-bottom: 2px;">Goal State</h4> Clear deliverables and validation criteria
+  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Constraints</p> Technical boundaries and limitations<br/>
+  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Rewards</p> Success metrics and performance targets<br/>
+  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Penalties</p> Anti-patterns and quality deductions<br/>
+  <p style="font-size: 1em; font-weight: bold; color: white; margin-bottom: 2px; margin-top: 0;">Goal State</p> Clear deliverables and validation criteria
 </td>
 </tr>
 </table>
