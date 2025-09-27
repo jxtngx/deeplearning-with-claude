@@ -54,23 +54,23 @@ This project uses a disciplined approach to requirements specification:
 
 <table>
 <tr>
-<td style="background-color: black; color: #808080; padding: 15px; width: 50%; vertical-align: top;">
-  <h3 style="margin-top: 0; margin-bottom: 10px; color: white;">INVEST User Stories</h3>
-  All agent tasks and prompt templates follow the agile INVEST criteria:<br/><br/>
-  <h4 style="color: white;">Independent</h4> Each story stands alone<br/>
-  <h4 style="color: white;">Negotiable</h4> Flexible implementation details<br/>
-  <h4 style="color: white;">Valuable</h4> Clear business or research value<br/>
-  <h4 style="color: white;">Estimable</h4> Measurable scope and effort<br/>
-  <h4 style="color: white;">Small</h4> Completable in reasonable time<br/>
-  <h4 style="color: white;">Testable</h4> Verifiable success criteria
+<td style="background-color: black; color: #808080; width: 50%; vertical-align: top;">
+  <h3 style="margin-top: 6; margin-bottom: 6px; color: white;">INVEST User Stories</h3>
+  All agent tasks and prompt templates follow the agile INVEST criteria<br/><br/>
+  <h4 style="color: white; margin-bottom: 2px;">Independent</h4> Each story stands alone<br/>
+  <h4 style="color: white; margin-bottom: 2px;">Negotiable</h4> Flexible implementation details<br/>
+  <h4 style="color: white; margin-bottom: 2px;">Valuable</h4> Clear business or research value<br/>
+  <h4 style="color: white; margin-bottom: 2px;">Estimable</h4> Measurable scope and effort<br/>
+  <h4 style="color: white; margin-bottom: 2px;">Small</h4> Completable in reasonable time<br/>
+  <h4 style="color: white; margin-bottom: 2px;">Testable</h4> Verifiable success criteria
 </td>
-<td style="background-color: black; color: #808080; padding: 15px; width: 50%; vertical-align: top;">
-  <h3 style="margin-top: 0; margin-bottom: 10px; color: white;">CRPG Optimization Framework</h3>
-  A custom format using Reinforcement Learning language guides AI agent optimization:<br/><br/>
-  <h4 style="color: white;">Constraints</h4> Technical boundaries and limitations<br/>
-  <h4 style="color: white;">Rewards</h4> Success metrics and performance targets<br/>
-  <h4 style="color: white;">Penalties</h4> Anti-patterns and quality deductions<br/>
-  <h4 style="color: white;">Goal State</h4> Clear deliverables and validation criteria
+<td style="background-color: black; color: #808080; width: 50%; vertical-align: top;">
+  <h3 style="margin-top: 6; margin-bottom: 6px; color: white;">CRPG Optimization Framework</h3>
+  A custom format using Reinforcement Learning language guides AI agent optimization<br/><br/>
+  <h4 style="color: white; margin-bottom: 2px;">Constraints</h4> Technical boundaries and limitations<br/>
+  <h4 style="color: white; margin-bottom: 2px;">Rewards</h4> Success metrics and performance targets<br/>
+  <h4 style="color: white; margin-bottom: 2px;">Penalties</h4> Anti-patterns and quality deductions<br/>
+  <h4 style="color: white; margin-bottom: 2px;">Goal State</h4> Clear deliverables and validation criteria
 </td>
 </tr>
 </table>
