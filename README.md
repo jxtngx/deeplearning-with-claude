@@ -191,7 +191,10 @@ Each agent operates as an expert consultant, providing:
 
 - `.claude/agents/`: Specialized agent definitions
 - `CLAUDE.md`: Agent routing and coordination
-- `docs/`: Task-specific prompt examples
+- `docs/`: Documentation and agile artifacts
+  - `adr/`: Architecture Decision Records
+  - `sprints/`: Sprint planning and tracking
+- `prompt-templates/`: Task-specific prompt examples
 - `src/`: Core Python modules (non-package structure)
   - `data.py`: Data pipeline components
   - `network.py`: Model architectures
@@ -337,6 +340,12 @@ $ "@agent-MetricsArchitect design custom metrics for video quality assessment"
 
 ### Non-Package Architecture
 The `src/` directory contains standalone modules that can be run directly without package installation. This simplifies deployment and reduces complexity while maintaining clear separation of concerns.
+
+### Agile Development Process
+- **Architecture Decision Records**: Documented technical decisions in `docs/adr/`
+- **Sprint Tracking**: Comprehensive sprint planning and retrospectives in `docs/sprints/`
+- **Test-Driven Development**: TestArchitect enforces TDD practices
+- **Continuous Integration**: Built into agent collaboration workflows
 
 ### Modern Tooling
 - **uv**: Fast, reliable Python package management

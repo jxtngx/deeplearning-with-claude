@@ -37,6 +37,39 @@ assignees: ''
    I want to add distributed data parallel training across multi-node EC2 clusters
    So that I can scale training to datasets larger than single-node memory
 
+## Acceptance Criteria
+- [ ] [Specific, measurable success criteria]
+- [ ] [Performance requirement or benchmark]
+- [ ] [Integration requirement]
+- [ ] [User-facing behavior]
+
+## Definition of Done
+- [ ] Feature implemented with full test coverage (>90%)
+- [ ] Documentation written (user guide and API docs)
+- [ ] Code reviewed by relevant agent/team member
+- [ ] Integration tests passing
+- [ ] Performance benchmarks met
+- [ ] Example usage provided
+- [ ] No breaking changes (or migration guide provided)
+- [ ] Deployed to test environment successfully
+
+## Priority (MoSCoW)
+- [ ] **Must Have** - Critical for current sprint/release
+- [ ] **Should Have** - Important but not critical
+- [ ] **Could Have** - Nice to have if time permits
+- [ ] **Won't Have** - Future consideration
+
+## Story Points Estimate
+- [ ] **Small** (1-3 points) - 1-2 days
+- [ ] **Medium** (5-8 points) - 3-5 days
+- [ ] **Large** (13 points) - 1-2 weeks
+- [ ] **XL** (21+ points) - Consider breaking into epic
+
+## Epic/Sprint Assignment
+- **Epic**: [Link to epic if applicable]
+- **Target Sprint**: [Sprint number or "Backlog"]
+- **Dependencies**: [List any blocking issues/features]
+
 ---
 
 ### Additional Context
@@ -46,6 +79,12 @@ assignees: ''
 
 **Example Use Cases:**
 [Concrete scenarios where this feature provides value]
+
+**Technical Approach:**
+[High-level implementation strategy]
+
+**Alternatives Considered:**
+[Other approaches and why this one is preferred]
 
 **Screenshots/Diagrams:**
 [If applicable, add visual aids]

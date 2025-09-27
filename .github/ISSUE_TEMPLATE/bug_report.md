@@ -37,6 +37,31 @@ assignees: ''
    I want to fix the LocalStackEmulator failing to mock SageMaker endpoints
    So that I can test deployment workflows locally before using AWS
 
+## Acceptance Criteria
+- [ ] [Specific, testable criteria for bug fix validation]
+- [ ] [Another measurable criteria]
+- [ ] [Performance/behavior requirement after fix]
+
+## Definition of Done
+- [ ] Bug reproduced and root cause identified
+- [ ] Fix implemented and unit tests written
+- [ ] All existing tests pass
+- [ ] Code reviewed by appropriate agent/team member
+- [ ] Documentation updated if needed
+- [ ] No regression in related functionality
+- [ ] Performance impact assessed
+
+## Severity
+- [ ] **Critical** - Production down, data loss, security vulnerability
+- [ ] **High** - Major functionality broken, no workaround
+- [ ] **Medium** - Functionality impaired, workaround available
+- [ ] **Low** - Minor issue, cosmetic, edge case
+
+## Estimated Effort
+- [ ] **Small** (1-3 story points) - Few hours
+- [ ] **Medium** (5-8 story points) - 1-2 days
+- [ ] **Large** (13+ story points) - 3+ days
+
 ---
 
 ### Additional Context
@@ -45,6 +70,23 @@ assignees: ''
 ```
 [Paste complete error output here]
 ```
+
+**Environment:**
+- PyTorch version:
+- Python version:
+- OS:
+- GPU/CUDA version (if applicable):
+
+**Steps to Reproduce:**
+1. [First step]
+2. [Second step]
+3. [...]
+
+**Expected Behavior:**
+[What should happen]
+
+**Actual Behavior:**
+[What actually happens]
 
 **Screenshots/Logs:**
 [If applicable, add visual evidence]

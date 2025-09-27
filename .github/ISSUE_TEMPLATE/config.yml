@@ -1,0 +1,21 @@
+# Copyright 2025 jxtngx | Apache 2.0 License
+# GitHub Issue Template Configuration
+
+blank_issues_enabled: false
+
+contact_links:
+  - name: Documentation
+    url: https://github.com/jxtngx/claude-code-pytorch/tree/main/docs
+    about: Check project documentation for guides and ADRs
+
+  - name: Sprint Planning
+    url: https://github.com/jxtngx/claude-code-pytorch/tree/main/docs/sprints
+    about: View current sprint status and planning documents
+
+  - name: Architecture Decisions
+    url: https://github.com/jxtngx/claude-code-pytorch/tree/main/docs/adr
+    about: Review Architecture Decision Records
+
+  - name: Discussions
+    url: https://github.com/jxtngx/claude-code-pytorch/discussions
+    about: Ask questions and discuss ideas with the community
