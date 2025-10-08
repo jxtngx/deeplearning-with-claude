@@ -1,4 +1,4 @@
-# Claude Code PyTorch
+# Deep Learning with Claude
 
 [![Author](https://img.shields.io/badge/author-jxtngx-blue)](https://github.com/jxtngx)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
